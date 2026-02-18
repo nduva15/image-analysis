@@ -12,6 +12,7 @@ sahi>=0.11.18             # Slicing Aided Hyper Inference (Step 2 in PRD)
 opencv-python-headless>=4.10.0  # Computer Vision (Headless for Server/Edge)
 pillow>=10.4.0            # Image processing (Found in multiple repos)
 numpy>=1.26.4             # High-performance math
+scipy>=1.13.0             # Signal processing (Welch PSD)
 
 # --- ⚡ Backend & API (FastAPI) ---
 fastapi>=0.112.0          # High-performance Async API

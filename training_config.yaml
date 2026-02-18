@@ -1,62 +1,46 @@
-# BetterBee JFST-DETR Training Configuration
-# SOTA Small-Object Strategy for 400k Dataset
+# BetterBee SOTA Training Config v2.1
+# Architecture: JFST-DETR (Small Target Transformer)
+# Optimization for sub-10px phoretic mites on 400k dataset
 
-# Dataset Paths
-path: ./dataset/processed_400k
-train: train/images
-val: val/images
-test: test/images
-
-# Classes (Canonical BetterBee Set)
-names:
-  0: healthy_bee
-  1: varroa_mite
-  2: dwv_bee
-  3: pollen_carrying_bee
-  4: drone
-  5: wasp
-
-# Hyperparameters (Optimized for Small Targets)
-hyp:
-  lr0: 0.01
-  lrf: 0.0001
-  momentum: 0.937
-  weight_decay: 0.0005
-  warmup_epochs: 3.0
-  warmup_momentum: 0.8
-  box: 0.05
-  cls: 0.3
-  dfl: 1.5
-  pose: 12.0
-  kpt: 2.0
-  hsv_h: 0.015
-  hsv_s: 0.7
-  hsv_v: 0.4
-  degrees: 0.0
-  translate: 0.1
-  scale: 0.9
-  shear: 0.0
-  perspective: 0.0
-  flipud: 0.5
-  fliplr: 0.5
-  mosaic: 1.0
-  mixup: 0.15
-  copy_paste: 0.1
-
-# JFST-DETR Architecture Overrides
 model:
-  backbone: CSPDarknet-v8 # High feature richness
-  neck: SEPN-FPN          # Pyramid enhancement for mites
-  head: DETR-SmallHead    # Transformer queries optimized for < 10px objects
-  modules:
-    - GAAM-Attention      # Global Awareness Adaptive Module
+  backbone: Swin-Small-V2
+  encoder_layers: 6
+  decoder_layers: 6
+  num_feature_levels: 4 # High-res pyramids for Varroa (1mm)
+  hidden_dim: 256
+  nheads: 8
+  dropout: 0.1
+  
+loss:
+  type: Focaler-IoU # Specifically focuses on small-scale regression
+  weights:
+    class: 2.0
+    bbox: 5.0
+    giou: 2.0
+  focal_alpha: 0.25
+  focal_gamma: 2.0
 
-# Training Control
-epochs: 100
-batch: 32            # Adjust based on VRAM (T4/P100 targets)
-imgsz: 1280          # High-res input is critical for phoretic mite detection
-device: 0            # Single GPU
-multi_scale: true
-optimizer: AdamW     # Better convergence for DETR-heads
-cos_lr: true
-close_mosaic: 10     # Disable mosaic for last 10 epochs for precision
+augmentation:
+  sahi_tiling: true # Sliced Aided Hyper Inference
+  slice_height: 512
+  slice_width: 512
+  overlap: 0.25
+  mosaic_prob: 0.5
+  mixup_prob: 0.1
+  color_jitter: 0.2
+  hflip: 0.5
+
+optimizer:
+  type: AdamW
+  lr: 0.0002
+  weight_decay: 0.0001
+  lr_scheduler: CosineAnnealingLR
+  warmup_epochs: 5
+
+dataset:
+  train_path: "data/gold_tier/train"
+  val_path: "data/gold_tier/val"
+  num_classes: 2 # [bee, varroa]
+  img_size: 1280
+  batch_size: 16
+  workers: 8

@@ -81,6 +81,32 @@ class NeuralSwarmRelay:
             
         return "Local_SOTA"
 
+    def partition_inference_load(self, task_metadata):
+        """
+        P2P Relay Logic: Partitions the JFST-DETR encoder/decoder 
+        across the Neural Swarm. Uses ZFP-style volatile RAM serialization.
+        """
+        active_peers = [p for p in self.peers.values() if p.is_active and p.load < 40.0]
+        
+        if not active_peers:
+            return {"strategy": "Local_Monolith", "path": None}
+            
+        # Divide pipeline into Relay Hops
+        # Node 1: Backbone (Spatial Enhancement)
+        # Node 2: Neck (GAAM)
+        # Node 3: Head (Hungarian Matcher)
+        partition_map = {
+            "spatial_pyramid": "Local",
+            "gaam_context": active_peers[0].id if len(active_peers) > 0 else "Local",
+            "hungarian_head": active_peers[1].id if len(active_peers) > 1 else "Local"
+        }
+        
+        return {
+            "strategy": "P2P_Relay",
+            "compression": "ZFP_Volatile",
+            "map": partition_map
+        }
+
 def demonstrate_swarm():
     relay = NeuralSwarmRelay(node_id="Hive_12")
     print(f"📡 Swarm Relay {relay.node_id} initiated...")

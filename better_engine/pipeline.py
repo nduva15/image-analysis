@@ -83,6 +83,10 @@ class BetterAnalysisPipeline:
         collapse_prob = 0.0
         qmp_stability = 1.0
         swarming_risk = "Stable"
+        swarm_pulse = 0.0
+        aarf_days = 14.0
+        mite_r0 = 0.0
+        diseases = {}
         thermal_metrics = None
         swarm_relay_status = "Offline"
 
@@ -93,7 +97,10 @@ class BetterAnalysisPipeline:
         # 5. Neural Swarm Routing
         # Announce status before processing to allow for dynamic load balancing
         self.swarm_relay.announce_status(load_percentage=50.0, priority=1)
-        swarm_relay_status = "Active" # Assuming successful announcement
+        
+        # SOTA: Determine P2P Partition strategy across the swarm
+        partition_strategy = self.swarm_relay.partition_inference_load({"resolution": "4K"})
+        swarm_relay_status = f"Active ({partition_strategy['strategy']})"
         
         request_id = str(uuid.uuid4())
         
@@ -118,9 +125,6 @@ class BetterAnalysisPipeline:
         report = compute_colony_report(all_detections)
         
         # 3. Biocybernetic Analysis (SOTA Mode)
-        collapse_prob = 0.0
-        qmp_stability = 1.0
-        swarming_risk = "Stable"
         
         if mode == AnalysisMode.SOTA:
             # Stochastic Analysis
