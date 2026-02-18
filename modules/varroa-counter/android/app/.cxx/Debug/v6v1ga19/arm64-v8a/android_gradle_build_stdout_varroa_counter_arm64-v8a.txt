@@ -1,5 +1,0 @@
-ninja: Entering directory `/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/arm64-v8a'
-[0/1] Re-running CMake...
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/arm64-v8a

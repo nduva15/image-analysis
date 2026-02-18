@@ -1,7 +1,0 @@
-Executable : /Users/joaquinblanco/Library/Android/sdk/cmake/3.18.1/bin/ninja
-arguments : 
--C
-/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/armeabi-v7a
-varroa_counter
-jvmArgs : 
-
