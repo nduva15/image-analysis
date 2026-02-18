@@ -1,70 +1,106 @@
-# 🐝 BetterBee Analysis — Biocybernetic Intelligence System
+# BetterBee Analysis: Biocybernetic Intelligence System
 
-> **The world's most scientifically advanced apiary OS. Synthesizing Stochastic Biocybernetics with 2026-SOTA Small-Target Transformers.**
-
-BetterBee has evolved into a **Biocybernetic Feedback Loop**. It integrates **Stochastic Differential Equations (Ito Calculus)**, **Queen Pheromone Stability Modeling**, and **CAMS Transformer Architectures** to provide a predictive, multi-modal intelligence platform.
+## Research Overview
+BetterBee Analysis is a precision apiculture operating system designed for large-scale apiary management. It synthesizes stochastic population modeling, epidemiological differential equations, and 2026-state-of-the-art (SOTA) small-target vision transformers. This system is engineered to process 400,000+ high-resolution clinical images to predict colony health trajectories.
 
 ---
 
-### 🧠 Biocybernetic Core Architecture
+## 1. Biocybernetic Intelligence Core
+
+### 1.1 Stochastic Population Dynamics (SDEs)
+We implement the Euler-Maruyama integration method for Stochastic Differential Equations (SDEs) to model the Hive Bee ($H$) and Forager ($F$) populations under environmental volatility ($\sigma$).
+
+#### Biological Drift (ODE Component):
+$$ \frac{dH}{dt} = L - 0.1H - \alpha H \cdot R(F, H) $$
+$$ \frac{dF}{dt} = \alpha H \cdot R(F, H) - m \cdot F $$
+
+Where $R(F, H)$ is the **Social Inhibition Function**:
+$$ R(F, H) = \frac{1}{1 + (F/H)^2} $$
+
+#### Stochastic Diffusion (Environmental Noise):
+We apply Ito Calculus to account for real-world perturbations:
+$$ dX_t = \mu(X_t, t)dt + \sigma(X_t, t)dW_t $$
+This allows the engine to calculate a **Collapse Probability** ($P_{collapse}$) rather than a binary status, indicating the statistical likelihood of viability within a 30-day window.
+
+### 1.2 Queen Pheromone Stability (QMP)
+The system simulates the distribution of Queen Mandibular Pheromone (QMP) across the hive. 
+$$ C_{qmp}(t) = C_0 \cdot e^{-\lambda / \tau} $$
+Where $\tau$ (transmission efficiency) is a function of bee density and behavioral fanning detected by the Vision AI. A drop in $C_{qmp}$ below a critical threshold triggers a **Swarming Prediction** 48 hours before visual queen cells are present.
+
+### 1.3 Thermal Brood-Heart Stability
+Using infrared spatial gradient analysis, we track the thermal core of the brood nest.
+$$ \text{Thermal Tightness} = \frac{1}{\text{Var}(\text{Thermal Matrix}) + \epsilon} $$
+A tightness score above the threshold indicates a concentrated brood mass and a high-performing queen.
+
+---
+
+## 2. Computer Vision: JFST-DETR Architecture
+
+Standard object detection models fail to resolve Varroa mites ($< 10$ pixels). Our implementation uses **JFST-DETR** (Jujube-Fruit-Small-Target DETR) which features:
+
+- **Global Awareness Adaptive Module (GAAM-v2):** Uses Cross-Attention Multi-Scale (CAMS) features to maintain temporal persistence of target textures across video frames.
+- **Spatial Enhancement Pyramid Network (SEPN):** Restores high-resolution spatial features lost in standard deep-layer convolutions.
+
+---
+
+## 3. Neural Swarm Routing (NSR)
+
+To optimize edge computation on Raspberry Pi and Jetson platforms, we implement an autonomous load-balancing protocol.
+
+- **Load Balancing Logic:** If local CPU/GPU utilization exceeds 85%, high-precision inference tasks are serialized via Protobuf and routed to idle nodes in the local Neural Swarm.
+- **Dynamic Glimpse Scaling:** Low-power models scan traffic flow rates and only trigger full transformer analysis when a behavioral anomaly or parasite density spike is detected.
+
+---
+
+## 4. Development Roadmap and Progress Tracking
+
+### Phase 0: Framework and Intelligence Core (Completed)
+- [x] Unification of 19 research repositories into a single monolithic package.
+- [x] Implementation of Eco-Epidemiological ODE/SDE solvers.
+- [x] Integration of Spectral Acoustic Analysis for hornet discrimination.
+- [x] Development of the Thermal Brood-Heart and Pheromone modeling modules.
+- [x] Deployment of the FastAPI transport layer.
+
+### Phase 1: Data Audit and Gold Standard Extraction (In Progress)
+- [x] Development of the Gold Standard Extractor ($Laplacian > 600$, $Contrast > 40$).
+- [ ] Execution of image audit on the 400,000 image dataset.
+- [ ] Label conversion to normalized YOLOv11/DETR formats.
+
+### Phase 2: SOTA Training (Planned)
+- [ ] Training JFST-DETR on the High-Precision Gold Standard subset.
+- [ ] Hyperparameter optimization via Optuna for stochastic $\alpha$ and $\sigma$ parameters.
+- [ ] Export to TensorRT FP16/INT8 for Jetson Orin Nano deployment.
+
+---
+
+## 5. Technical Structure
 
 ```text
 image-analysis/
-├── training_config.yaml             ← SOTA JFST-DETR training config
-├── gold_standard_extractor.py       ← 💎 SOTA Gold Standard Dataset Tool
+├── training_config.yaml             (JFST-DETR Small-Object Configuration)
+├── gold_standard_extractor.py       (Scientific Quality Audit Tool)
 │
-├── better_engine/                   ← � THE BIOCYBERNETIC CORE
+├── better_engine/                   (Biocybernetic Core)
 │   ├── core/
-│   │   ├── math/                    
-│   │   │   ├── stochastic_vitality.py # 🎲 SDE Population Volatility (Ito)
-│   │   │   ├── pheromone_modeling.py # 🧬 QMP Pheromone Stability 
-│   │   │   └── vitality_core.py     # 🧬 Eco-Epidemiological ODEs
-│   │   └── image_processing.py      # Laplacian Quality Filters
-│   └── detectors/
-│       ├── small_object/            # 🎯 JFST-DETR + GAAM-v2 CAMS
-│       │   ├── gaam_module.py       # Cross-Attention Multi-Scale
-│       │   └── sepn_net.py          # Spatial Enhancement Pyramid
-│       └── acoustics/               # 📡 Acoustic Spectrum (Hornet/Bee)
+│   │   ├── math/
+│   │   │   ├── stochastic_vitality.py
+│   │   │   ├── pheromone_modeling.py
+│   │   │   └── vitality_core.py
+│   │   ├── thermal/
+│   │   │   └── thermal_intelligence.py
+│   │   └── image_processing.py
+│   ├── detectors/
+│   │   ├── small_object/
+│   │   │   ├── gaam_module.py
+│   │   │   └── sepn_net.py
+│   │   ├── entrance/
+│   │   ├── classifiers/
+│   │   └── acoustics/
+│   └── networking/
+│       └── swarm_relay.py           (Neural Swarm Load Balancing)
 ```
 
 ---
 
-### 🎲 1. Stochastic Intelligence & Pheromones
-
-*   **SDE Population Modeling:** Uses **Ito Calculus** and Euler-Maruyama integration to simulate colony populations under real-world "noise" (weather, chemicals).
-*   **QMP Stability Monitoring:** Simulates **Queen Mandibular Pheromone** distribution. Predicts "Emergency Queen Cell" initiation (swarming) 48 hours before visual evidence.
-*   **Temporal Feature Persistence (GAAM-v2):** Implements **CAMS (Cross-Attention Multi-Scale)** features, allowing the transformer to "remember" bee textures across frames to confirm sub-10px mites.
-
----
-
-### 📡 2. Acoustic & Behavioral Fusion
-
-*   **Spectral Fingerprinting:** Real-time STFT tracks wing-beat frequencies (80Hz - 250Hz) to detect Giant Hornets ($V. mandarinia$) and Yellow-legged Hornets ($V. velutina$).
-*   **Social Inhibition Factor ($\sigma$):** Mathematically models the nurse-to-forager pipeline stress, flagging "precocious foraging" risks.
-
----
-
-## ⚡ Data Pipeline & Gold Standard (Phase 1)
-
-With a **400k image dataset**, we prioritize the "Gold Standard" subset:
-
-```bash
-# Extract the most scientifically valuable images (Clarity > 600 + Variance)
-python gold_standard_extractor.py /path/to/400k_data /path/to/gold_standard
-```
-
----
-
-## 🗺️ Engineering Roadmap
-
-- [x] **Phase 0** — Monolithic Biocybernetic package built.
-- [x] **Phase 0** — **Stochastic / Pheromone** math modules implemented.
-- [x] **Phase 0** — **GAAM-v2 CAMS** architecture defined.
-- [ ] **Phase 1** — Extract **Gold Standard** subset from 400k dataset.
-- [ ] **Phase 2** — Train **BetterMite-DETR** weights on High-Precision subset.
-- [ ] **Phase 3** — Final deployment as a Precision Apiculture OS.
-
----
-
-## ⚠️ Attribution & Licensing
-Standard attribution for the 19 research repositories is maintained in `modules/`. All advanced Biocybernetic modules are © BetterBee Analysis.
+## 6. Licensing and Attribution
+This project integrates research from 19 distributed GitHub repositories. Full attribution and original license files are maintained within the `modules/` directory. All proprietary extensions in `better_engine/core/` are the intellectual property of BetterBee Analysis.

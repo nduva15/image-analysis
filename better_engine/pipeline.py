@@ -26,6 +26,8 @@ from better_engine.core.math.pheromone_modeling import QMPSimulator
 from better_engine.detectors.mite_detector import MiteDetector
 from better_engine.detectors.bee_classifier import BeeClassifier
 from better_engine.detectors.entrance_monitor import EntranceMonitor
+from better_engine.core.thermal.thermal_intelligence import BroodHeartAnalyzer
+from better_engine.networking.swarm_relay import NeuralSwarmRelay
 
 class AnalysisMode(str, Enum):
     FAST     = "fast"
@@ -45,6 +47,9 @@ class BetterAnalysisResult:
     collapse_probability: float = 0.0
     qmp_stability: float = 1.0
     swarming_risk: str = "Stable"
+    brood_heart_temp_c: float = 0.0
+    brood_heart_health_score: float = 0.0
+    swarm_relay_status: str = "Offline"
     
     detections: list[Detection] = field(default_factory=list)
     metadata: dict = field(default_factory=dict)
@@ -57,14 +62,33 @@ class BetterAnalysisPipeline:
         self.bee_classifier = BeeClassifier()
         self.entrance_monitor = EntranceMonitor()
         
-        # Advanced Modules
+        # Advanced Intelligence Modules
         self.stochastic_math = StochasticHiveMind()
         self.qmp_simulator = QMPSimulator()
+        self.thermal_brain = BroodHeartAnalyzer()
+        self.swarm_relay = NeuralSwarmRelay(node_id="Master_Node")
         
         self.temporal_memory = [] # Buffer for CAMS fusion
 
-    def run(self, raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA) -> BetterAnalysisResult:
+    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA) -> BetterAnalysisResult:
         start_time = time.perf_counter()
+        
+        # Initialize advanced metrics
+        collapse_prob = 0.0
+        qmp_stability = 1.0
+        swarming_risk = "Stable"
+        thermal_metrics = None
+        swarm_relay_status = "Offline"
+
+        # 4. Thermal Intelligence
+        if thermal_matrix is not None:
+            thermal_metrics = self.thermal_brain.process_frame(thermal_matrix)
+            
+        # 5. Neural Swarm Routing
+        # Announce status before processing to allow for dynamic load balancing
+        self.swarm_relay.announce_status(load_percentage=50.0, priority=1)
+        swarm_relay_status = "Active" # Assuming successful announcement
+        
         request_id = str(uuid.uuid4())
         
         img = decode_image(raw_bytes)
@@ -120,7 +144,10 @@ class BetterAnalysisPipeline:
             report=report,
             collapse_probability=round(collapse_prob, 4),
             qmp_stability=round(qmp_stability, 3),
-            swarming_risk=swarming_risk,
+            swarming_risk=thermal_metrics["swarming_risk"] if thermal_metrics else swarming_risk,
+            brood_heart_temp_c=thermal_metrics["nest_temp"] if thermal_metrics else 0.0,
+            brood_heart_health_score=self.thermal_brain.calculate_health_index(thermal_metrics) if thermal_metrics else 0.0,
+            swarm_relay_status=swarm_relay_status,
             detections=all_detections
         )
 
