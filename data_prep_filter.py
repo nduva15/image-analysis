@@ -31,7 +31,11 @@ class ScientificAuditor:
         self.laplacian_threshold = laplacian_threshold
         self.saliency_threshold = saliency_threshold
         # SOTA: Initialize Saliency detector
-        self.saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+        self.saliency_available = True
+        try:
+            self.saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+        except AttributeError:
+            self.saliency_available = False
 
     def calculate_scientific_score(self, image: np.ndarray):
         """
@@ -51,8 +55,11 @@ class ScientificAuditor:
         entropy = -np.sum(marg * np.log2(marg + 1e-7))
 
         # 3. Saliency Mapping for Signal Prominence
-        success, saliency_map = self.saliency.computeSaliency(image)
-        saliency_mean = np.mean(saliency_map) if success else 0.0
+        if self.saliency_available:
+            success, saliency_map = self.saliency.computeSaliency(image)
+            saliency_mean = np.mean(saliency_map) if success else 0.0
+        else:
+            saliency_mean = 0.0
         
         # 4. Gold Tier Selection Logic
         is_gold = (sharpness > self.laplacian_threshold and 
