@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Varroa Mites Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Image Based Varroa Mites Detector and Counter</h1>
+        <form action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload and Predict</button>
+        </form>
+
+        {% if prediction %}
+        <h3>Result:</h3>
+        <p>{{ prediction }}</p>
+        <img src="{{ url_for('static', filename='uploads/varroa_mites_detected.png') }}" alt="Detection Result" style="max-width: 400px;">
+        {% endif %}
+
+        {% if result_image_path %}
+        <h3>Detection Image:</h3>
+        <img src="{{ url_for('static', filename='uploads/varroa_mites_detected.png') }}" alt="Detected Varroa Mites" style="max-width: 400px;">
+        {% endif %}
+
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
+
