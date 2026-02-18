@@ -12,32 +12,41 @@ import subprocess
 
 # Unified list of datasets provided by User
 DATASETS = [
-    "/kaggle/input/bee-detection-in-the-wild",
-    "/kaggle/input/bee-vs-wasp",
-    "/kaggle/input/bees-at-their-beehives",
-    "/kaggle/input/bees-dataset",
-    "/kaggle/input/honeybee-positions",
-    "/kaggle/input/honey-bee-annotated-images",
-    "/kaggle/input/honey-bee-pollen"
+    "birdy654/bee-detection-in-the-wild",
+    "jonathanbyrne/to-bee-or-not-to-bee",
+    "se18m502/bee-hive-metrics",
+    "jerzydziewierz/bee-vs-wasp",
+    "mxfxmm/bees-at-their-beehives",
+    "ashfaqsyed/bees-dataset",
+    "kport354041/honeybee-positions",
+    "ivanfel/honey-bee-pollen",
+    "jenny18/honey-bee-annotated-images"
 ]
+
+def resolve_path(slug):
+    """Kaggle mounts datasets either at /kaggle/input/slug or /kaggle/input/username/slug or /kaggle/input/datasets/username/slug."""
+    name = slug.split("/")[-1]
+    candidates = [
+        Path("/kaggle/input") / name,
+        Path("/kaggle/input") / slug,
+        Path("/kaggle/input/datasets") / slug,
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return None
 
 def run_audit():
     print("🐝 Starting Master Multi-Dataset Audit...")
     
-    # We use data_prep_filter.py as the engine
-    # We will process each dataset into the same output directory
     output_base = "output/master_gold_collection"
     os.makedirs(output_base, exist_ok=True)
 
-    for ds_path in DATASETS:
-        if not os.path.exists(ds_path):
-            print(f"⚠️ Warning: Dataset path not found: {ds_path}")
-            # Try a common alternative path structure
-            alt_path = ds_path.replace("/kaggle/input/", "/kaggle/input/datasets/")
-            if os.path.exists(alt_path):
-                ds_path = alt_path
-            else:
-                continue
+    for slug in DATASETS:
+        ds_path = resolve_path(slug)
+        if not ds_path:
+            print(f"⚠️ Warning: Dataset not found for slug: {slug}")
+            continue
 
         print(f"\n📡 Processing Pillar: {ds_path}")
         
