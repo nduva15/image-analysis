@@ -1,6 +1,6 @@
-# 🐝 BetterBee Analysis - Unified Monorepo Dependencies
+# 🐝 Image Analysis - Unified Monorepo Dependencies
 # =====================================================
-# This file consolidates dependencies from 19 repositories for the new "BetterBee" platform.
+# This file consolidates dependencies from 19 repositories for the new "Image Analysis" platform.
 # ⚠️  CRITICAL: Legacy libraries (TensorFlow 1.x, Old PyTorch) are EXCLUDED to prevent conflicts.
 #     Run legacy components in Docker containers if strictly necessary.
 

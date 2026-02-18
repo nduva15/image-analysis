@@ -1,5 +1,6 @@
 """
-better_engine.core
+image_analysis.core
 ==================
 Proprietary research, math, and scoring algorithms.
 """
+

@@ -1,5 +1,5 @@
 """
-better_engine.pipeline
+image_analysis.pipeline
 =======================
 The Biocybernetic Intelligence Pipeline.
 
@@ -17,17 +17,17 @@ from enum import Enum
 from pathlib import Path
 import numpy as np
 
-from better_engine.core.image_processing import decode_image, assess_blur, enhance_contrast
-from better_engine.core.vitality import Detection, compute_colony_report, ColonyReport
-from better_engine.core.math.stochastic_vitality import StochasticHiveMind
-from better_engine.core.math.pheromone_modeling import QMPSimulator
-from better_engine.core.math.swarm_intelligence import SwarmIntelligence
-from better_engine.detectors.mite_detector import MiteDetector
-from better_engine.detectors.bee_classifier import BeeClassifier
-from better_engine.detectors.entrance_monitor import EntranceMonitor
-from better_engine.detectors.disease_analyzer import DiseaseAnalyzer
-from better_engine.core.thermal.thermal_intelligence import BroodHeartAnalyzer
-from better_engine.networking.swarm_relay import NeuralSwarmRelay
+from image_analysis.core.image_processing import decode_image, assess_blur, enhance_contrast
+from image_analysis.core.vitality import Detection, compute_colony_report, ColonyReport
+from image_analysis.core.math.stochastic_vitality import StochasticHiveMind
+from image_analysis.core.math.pheromone_modeling import QMPSimulator
+from image_analysis.core.math.swarm_intelligence import SwarmIntelligence
+from image_analysis.detectors.mite_detector import MiteDetector
+from image_analysis.detectors.bee_classifier import BeeClassifier
+from image_analysis.detectors.entrance_monitor import EntranceMonitor
+from image_analysis.detectors.disease_analyzer import DiseaseAnalyzer
+from image_analysis.core.thermal.thermal_intelligence import BroodHeartAnalyzer
+from image_analysis.networking.swarm_relay import NeuralSwarmRelay
 
 class AnalysisMode(str, Enum):
     FAST     = "fast"
@@ -36,7 +36,7 @@ class AnalysisMode(str, Enum):
     SOTA     = "sota" # Biocybernetic mode (SDEs + QMP)
 
 @dataclass
-class BetterAnalysisResult:
+class AnalysisResult:
     request_id: str
     mode: AnalysisMode
     processing_time_ms: float
@@ -58,8 +58,8 @@ class BetterAnalysisResult:
     detections: list[Detection] = field(default_factory=list)
     metadata: dict = field(default_factory=dict)
 
-class BetterAnalysisPipeline:
-    """The unified 'Brain' of BetterBee Analysis."""
+class AnalysisPipeline:
+    """The unified 'Brain' of Image Analysis."""
 
     def __init__(self):
         self.mite_detector = MiteDetector()
@@ -76,7 +76,7 @@ class BetterAnalysisPipeline:
         
         self.temporal_memory = [] # Buffer for CAMS fusion
 
-    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA) -> BetterAnalysisResult:
+    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA) -> AnalysisResult:
         start_time = time.perf_counter()
         
         # Initialize advanced metrics
@@ -164,7 +164,7 @@ class BetterAnalysisPipeline:
 
         elapsed = (time.perf_counter() - start_time) * 1000
         
-        return BetterAnalysisResult(
+        return AnalysisResult(
             request_id=request_id,
             mode=mode,
             processing_time_ms=round(elapsed, 2),
@@ -184,7 +184,8 @@ class BetterAnalysisPipeline:
         )
 
 # Singleton
-_pipeline = BetterAnalysisPipeline()
+_pipeline = AnalysisPipeline()
 
-def analyze_image(raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA) -> BetterAnalysisResult:
+def analyze_image(raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA) -> AnalysisResult:
     return _pipeline.run(raw_bytes, mode)
+

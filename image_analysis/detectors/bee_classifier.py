@@ -1,5 +1,5 @@
 """
-better_engine.detectors.bee_classifier
+image_analysis.detectors.bee_classifier
 ========================================
 Multi-class bee health classifier.
 
@@ -20,7 +20,7 @@ from pathlib import Path
 
 import numpy as np
 
-from better_engine.core.vitality import BeeClass, Detection
+from image_analysis.core.vitality import BeeClass, Detection
 
 # Canonical class index → BeeClass mapping (matches YOLO training label order)
 _CLASS_MAP: dict[int, BeeClass] = {
@@ -129,3 +129,4 @@ class BeeClassifier:
     @property
     def is_real(self) -> bool:
         return not self._stub_mode
+

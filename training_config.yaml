@@ -1,4 +1,4 @@
-# BetterBee SOTA Training Config v2.1
+# Image Analysis SOTA Training Config v2.1
 # Architecture: JFST-DETR (Small Target Transformer)
 # Optimization for sub-10px phoretic mites on 400k dataset
 

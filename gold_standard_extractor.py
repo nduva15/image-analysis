@@ -1,5 +1,5 @@
 """
-Gold Standard Extractor — BetterBee Analysis
+Gold Standard Extractor — Image Analysis
 ============================================
 Identifies the most scientifically valuable images for SOTA training.
 
@@ -17,9 +17,9 @@ from tqdm import tqdm
 import numpy as np
 import cv2
 
-# Add better_engine to path
+# Add image_analysis to path
 sys.path.append(str(Path(__file__).parent))
-from better_engine.core.image_processing import decode_image, assess_blur
+from image_analysis.core.image_processing import decode_image, assess_blur
 
 def is_gold_standard(image: np.ndarray, blur_score: float) -> bool:
     """Rigorous scientific quality check."""
@@ -72,3 +72,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

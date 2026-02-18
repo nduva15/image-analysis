@@ -1,5 +1,5 @@
 """
-better_engine.detectors.acoustics.spectrogram
+image_analysis.detectors.acoustics.spectrogram
 ==============================================
 SOTA Acoustic Spectrum Analyzer for hornet-bee discrimination.
 
@@ -74,3 +74,4 @@ def load_audio_segment(path):
     """Utility to load and normalize audio segments."""
     y, sr = librosa.load(path, sr=22050)
     return y, sr
+

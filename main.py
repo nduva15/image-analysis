@@ -1,7 +1,7 @@
 """
-BetterBee Analysis — FastAPI Entry Point
+Image Analysis — FastAPI Entry Point
 =========================================
-All inference logic lives in `better_engine`. This file is purely
+All inference logic lives in `image_analysis`. This file is purely
 the HTTP transport layer.
 """
 
@@ -16,22 +16,22 @@ from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-import better_engine
-from better_engine.pipeline import AnalysisMode, BetterAnalysisResult, load_weights
-from better_engine.pipeline import analyze_image as _analyze_image
+import image_analysis
+from image_analysis.pipeline import AnalysisMode, AnalysisResult, load_weights
+from image_analysis.pipeline import analyze_image as _analyze_image
 
 # ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
 
 app = FastAPI(
-    title="BetterBee Analysis API",
+    title="Image Analysis API",
     description=(
         "Unified apiary intelligence engine. Detects Varroa mites, classifies "
         "bee health, and computes Colony Vitality Scores from hive images.\n\n"
-        f"**Package version:** `better_engine {better_engine.__version__}`"
+        f"**Package version:** `image_analysis {image_analysis.__version__}`"
     ),
-    version=better_engine.__version__,
+    version=image_analysis.__version__,
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -89,7 +89,7 @@ class AnalysisOut(BaseModel):
     vitality: VitalityOut
 
 
-def _to_response(result: BetterAnalysisResult) -> AnalysisOut:
+def _to_response(result: AnalysisResult) -> AnalysisOut:
     return AnalysisOut(
         request_id=result.request_id,
         mode=result.mode.value,
@@ -143,8 +143,8 @@ async def startup_event():
 @app.get("/", tags=["Health"])
 async def root():
     return {
-        "service": "BetterBee Analysis API",
-        "version": better_engine.__version__,
+        "service": "Image Analysis API",
+        "version": image_analysis.__version__,
         "status": "online",
         "docs": "/docs",
         "modules": len([d for d in Path("modules").iterdir() if d.is_dir()])
@@ -262,3 +262,4 @@ async def vitality_thresholds():
             "treat": "> 3 mites per 100 bees (treatment required)",
         },
     }
+

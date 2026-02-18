@@ -1,5 +1,5 @@
 """
-better_engine.core.thermal.thermal_intelligence
+image_analysis.core.thermal.thermal_intelligence
 ===============================================
 Proprietary thermal analysis for queen health and brood nest stability.
 
@@ -66,3 +66,4 @@ class BroodHeartAnalyzer:
         """Composite health index based on thermal stability."""
         stability_score = 100.0 - (abs(metrics["nest_temp"] - self.target) * 10)
         return max(0.0, min(100.0, stability_score))
+

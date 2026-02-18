@@ -1,5 +1,5 @@
 """
-better_engine.detectors.disease_analyzer
+image_analysis.detectors.disease_analyzer
 ========================================
 SOTA Biomarker Analysis for Pathogen Prediction.
 
@@ -65,3 +65,4 @@ class DiseaseAnalyzer:
         if temperature_delta < 2.0 and flow_rate < 0.5:
             return 0.75 # High risk
         return 0.1 # Low risk
+

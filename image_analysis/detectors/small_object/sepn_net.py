@@ -1,5 +1,5 @@
 """
-better_engine.detectors.small_object.sepn_net
+image_analysis.detectors.small_object.sepn_net
 ==============================================
 Spatial Enhancement Pyramid Network (SEPN) for BetterMite detection.
 
@@ -39,3 +39,4 @@ class SEPNNet(nn.Module):
             
         # Refinement
         return [self.fpn_convs[i](outputs[i]) for i in range(len(outputs))]
+

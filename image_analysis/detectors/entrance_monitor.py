@@ -1,5 +1,5 @@
 """
-better_engine.detectors.entrance_monitor
+image_analysis.detectors.entrance_monitor
 ==========================================
 Hive entrance monitoring — bee counting, wasp detection, and traffic analysis.
 
@@ -18,7 +18,7 @@ from pathlib import Path
 
 import numpy as np
 
-from better_engine.core.vitality import BeeClass, Detection
+from image_analysis.core.vitality import BeeClass, Detection
 
 
 @dataclass
@@ -142,3 +142,4 @@ class EntranceMonitor:
     @property
     def tracking_enabled(self) -> bool:
         return self._tracker is not None
+

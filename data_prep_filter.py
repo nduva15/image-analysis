@@ -1,5 +1,6 @@
+
 """
-Scientific Auditor — BetterBee Analysis
+Scientific Auditor — Image Analysis
 =======================================
 Automated Quality Control for the 400,000 image dataset.
 Optimizes training by filtering for high spectral information density.
@@ -18,7 +19,7 @@ import cv2
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
-# Add better_engine to path
+# Add image_analysis to path
 sys.path.append(str(Path(__file__).parent))
 
 class ScientificAuditor:
@@ -105,3 +106,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

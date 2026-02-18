@@ -1,5 +1,5 @@
 """
-Neural Swarm Relay (NSR) — BetterBee Analysis
+Neural Swarm Relay (NSR) — Image Analysis
 =============================================
 Autonomous orchestration logic for edge-computational load balancing.
 

@@ -1,5 +1,5 @@
 """
-better_engine.core.math.pheromone_modeling
+image_analysis.core.math.pheromone_modeling
 ===========================================
 Bio-mathematical simulation of Queen Mandibular Pheromone (QMP) distribution.
 
@@ -42,3 +42,4 @@ class QMPSimulator:
         """Predicts risk of queen cell initiation based on 48h trend."""
         trend = np.gradient(historical_stability)
         return "Critical" if np.mean(trend) < -0.15 else "Stable"
+

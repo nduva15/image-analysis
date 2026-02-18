@@ -1,5 +1,5 @@
 """
-better_engine.core.math.vitality_core
+image_analysis.core.math.vitality_core
 ======================================
 Predictive eco-epidemiological modeling for colony health.
 
@@ -55,3 +55,4 @@ class ColonyIntelligence:
     def calculate_social_inhibition(self, H, F):
         """Quantifies current stress on the nurse-to-forager pipeline."""
         return 1 / (1 + (F / (H + 1e-6))**2)
+

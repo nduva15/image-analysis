@@ -1,5 +1,5 @@
 """
-better_engine.detectors.small_object.gaam_module
+image_analysis.detectors.small_object.gaam_module
 ================================================
 Global Awareness Adaptive Module (GAAM) for JFST-DETR.
 
@@ -52,3 +52,4 @@ class GAAMModuleV2(nn.Module):
             x_att = x_att + torch.bmm(k, attn.transpose(1, 2)).view(b, c, h, w)
             
         return x_att
+

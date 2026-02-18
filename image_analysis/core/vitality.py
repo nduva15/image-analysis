@@ -1,5 +1,5 @@
 """
-better_engine.core.vitality
+image_analysis.core.vitality
 ===========================
 Colony health scoring and vitality index computation.
 
@@ -149,3 +149,4 @@ def compute_colony_report(detections: list[Detection]) -> ColonyReport:
         counts=dict(counts),
         warnings=warnings,
     )
+

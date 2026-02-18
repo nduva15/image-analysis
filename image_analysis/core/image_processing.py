@@ -1,5 +1,5 @@
 """
-better_engine.core.image_processing
+image_analysis.core.image_processing
 =====================================
 Standardized image pre-processing pipeline for hive photos.
 
@@ -96,3 +96,4 @@ def is_usable(image: np.ndarray, min_blur_score: float = 100.0) -> bool:
     Used in the data prep pipeline (Phase 1) to filter the 400k dataset.
     """
     return assess_blur(image) >= min_blur_score
+

@@ -1,5 +1,5 @@
 """
-TensorRT Converter — BetterBee Analysis
+TensorRT Converter — Image Analysis
 ========================================
 Optimizes JFST-DETR / YOLO11 models for Ghost Edge deployment (Jetson Orin).
 Converts PyTorch weights to INT8 TensorRT engines for zero-disk, volatile-only execution.
@@ -46,7 +46,7 @@ class GhostEdgeOptimizer:
         return True
 
 def main():
-    print("🐝 BetterBee Ghost Edge Optimization Tool v1.0")
+    print("🐝 Image Analysis Ghost Edge Optimization Tool v1.0")
     # Path to SOTA weights recovered from Kaggle
     optimizer = GhostEdgeOptimizer("weights/jfst_detr_gold.pt")
     

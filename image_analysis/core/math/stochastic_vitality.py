@@ -1,5 +1,5 @@
 """
-better_engine.core.math.stochastic_vitality
+image_analysis.core.math.stochastic_vitality
 ============================================
 Advanced population modeling using the SIR-Ross-MacDonald framework.
 
@@ -87,3 +87,4 @@ class StochasticHiveMind:
         final_populations = H_paths[:, -1] + F_paths[:, -1]
         collapses = np.sum(final_populations < threshold)
         return float(collapses / H_paths.shape[0])
+

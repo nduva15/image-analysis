@@ -1,12 +1,12 @@
-# BetterBee Analysis: Biophysical Orchestration Engine
+# Image Analysis: Biophysical Orchestration Engine
 
-BetterBee Analysis is a precision apiculture operating system that transcends standard environmental monitoring. It is a high-order **Biophysical Orchestration System** integrating stochastic eco-epidemiology, 2026-SOTA vision transformers, and autonomous edge load-balancing.
+Image Analysis is a precision apiculture operating system that transcends standard environmental monitoring. It is a high-order **Biophysical Orchestration System** integrating stochastic eco-epidemiology, 2026-SOTA vision transformers, and autonomous edge load-balancing.
 
 ---
 
 ## 1. Infrastructure: Distributed Swarm Orchestration
 
-To maintain a zero-disk security protocol while processing 4K video at the edge, BetterBee utilizes **Neural Swarm Routing (NSR)** via the `swarm_relay.py` P2P protocol.
+To maintain a zero-disk security protocol while processing 4K video at the edge, Image Analysis utilizes **Neural Swarm Routing (NSR)** via the `swarm_relay.py` P2P protocol.
 
 | Layer | Strategy | Governance |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ $$ \frac{dF}{dt} = \alpha H \cdot R(F, H) - d_F F + \sigma_F F dW_t $$
 
 ## 3. Disease Biomarkers: Geometric Morphometrics
 
-BetterBee refinements include the analysis of **Fluctuating Asymmetry (FA)** in honeybee wing venation as a biomarker for **Deformed Wing Virus (DWV)** viral load.
+Image Analysis refinements include the analysis of **Fluctuating Asymmetry (FA)** in honeybee wing venation as a biomarker for **Deformed Wing Virus (DWV)** viral load.
 
 ### 3.1 Asymmetry Calculation
 Using Keypoint R-CNN to identify anatomical landmarks, we calculate the **Centroid Size (CS)** variance:
@@ -67,7 +67,7 @@ image-analysis/
 ├── data_prep_filter.py              (Scientific Auditor / Gold Tier)
 ├── tensorrt_converter.py            (INT8 Optimization Tool)
 │
-├── better_engine/                   (Orchestration Core)
+├── image_analysis/                   (Orchestration Core)
 │   ├── core/
 │   │   ├── math/                    (SDE / SIRS-CCD / Swarm Pulse)
 │   │   ├── thermal/                 (LoG Gradient Analysis)
@@ -79,3 +79,4 @@ image-analysis/
 │   └── networking/
 │       └── swarm_relay.py           (P2P Load Partitioning)
 ```
+

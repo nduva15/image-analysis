@@ -1,5 +1,5 @@
 """
-better_engine.detectors.mite_detector
+image_analysis.detectors.mite_detector
 ======================================
 Varroa mite detection using YOLO11 + SAHI tiled inference.
 
@@ -27,7 +27,7 @@ from pathlib import Path
 
 import numpy as np
 
-from better_engine.core.vitality import BeeClass, Detection
+from image_analysis.core.vitality import BeeClass, Detection
 
 
 class MiteDetector:
@@ -166,3 +166,4 @@ class MiteDetector:
     @property
     def is_real(self) -> bool:
         return not self._stub_mode
+
