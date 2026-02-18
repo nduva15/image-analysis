@@ -108,12 +108,14 @@ def train_epoch(model, loader, optimizer, criterion, device):
     total_loss = 0
     for images, audio, targets in loader:
         images, audio = images.to(device), audio.to(device)
+        labels = targets["labels"].to(device).squeeze() # Fixed: CrossEntropy needs 1D Tensor
+        boxes = targets["boxes"].to(device).squeeze(1)  # Fixed: Match BBox batch dimensions
         
         optimizer.zero_grad()
         logits, bboxes = model(images, audio)
         
-        loss_cls = criterion(logits, targets["labels"].to(device))
-        loss_box = nn.functional.smooth_l1_loss(bboxes, targets["boxes"].to(device))
+        loss_cls = criterion(logits, labels)
+        loss_box = nn.functional.smooth_l1_loss(bboxes, boxes)
         
         loss = loss_cls + loss_box
         loss.backward()
