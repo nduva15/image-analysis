@@ -15,6 +15,7 @@ weights/
 
 # Data
 data/
+output/
 
 # OS
 .DS_Store
