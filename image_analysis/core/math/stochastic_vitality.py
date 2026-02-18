@@ -42,6 +42,18 @@ class StochasticHiveMind:
         r0 = beta / gamma
         return float(round(r0, 4))
 
+    def calculate_risk(self, audio_spectral_density: float, visual_mite_ratio: float) -> float:
+        """
+        Multi-Modal Fusion Risk Score.
+        Combines acoustic stress indicators with visual infestation evidence.
+        """
+        # Normalize audio spectral density (heuristic based on MFCC mean range)
+        audio_stress = min(1.0, max(0.0, (audio_spectral_density + 50) / 100)) 
+        
+        # Weighted risk score
+        risk_score = (audio_stress * 0.4) + (visual_mite_ratio * 0.6)
+        return float(round(risk_score, 4))
+
     def simulate_path(self, H0, F0, death_rate, days=30, simulations=100):
         """Euler-Maruyama integration for population prediction paths."""
         dt = 1 # daily steps

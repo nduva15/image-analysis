@@ -77,6 +77,7 @@ class VitalityOut(BaseModel):
     brood_heart_temp_c: float
     brood_heart_health_score: float
     swarm_relay_status: str
+    acoustic_metrics: dict[str, Any]
     diseases: dict[str, float]
 
 
@@ -122,6 +123,7 @@ def _to_response(result: AnalysisResult) -> AnalysisOut:
             brood_heart_temp_c=result.brood_heart_temp_c,
             brood_heart_health_score=result.brood_heart_health_score,
             swarm_relay_status=result.swarm_relay_status,
+            acoustic_metrics=result.acoustic_metrics,
             diseases=result.diseases,
         ),
     )

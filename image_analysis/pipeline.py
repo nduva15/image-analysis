@@ -27,6 +27,7 @@ from image_analysis.detectors.bee_classifier import BeeClassifier
 from image_analysis.detectors.entrance_monitor import EntranceMonitor
 from image_analysis.detectors.disease_analyzer import DiseaseAnalyzer
 from image_analysis.core.thermal.thermal_intelligence import BroodHeartAnalyzer
+from image_analysis.core.audio_fusion import AcousticSentry
 from image_analysis.networking.swarm_relay import NeuralSwarmRelay
 
 class AnalysisMode(str, Enum):
@@ -53,6 +54,7 @@ class AnalysisResult:
     brood_heart_temp_c: float = 0.0
     brood_heart_health_score: float = 0.0
     swarm_relay_status: str = "Offline"
+    acoustic_metrics: dict = field(default_factory=dict)
     diseases: dict[str, float] = field(default_factory=dict)
     
     detections: list[Detection] = field(default_factory=list)
@@ -73,11 +75,12 @@ class AnalysisPipeline:
         self.swarm_brain = SwarmIntelligence()
         self.disease_brain = DiseaseAnalyzer()
         self.thermal_brain = BroodHeartAnalyzer()
+        self.acoustic_brain = AcousticSentry()
         self.swarm_relay = NeuralSwarmRelay(node_id="Master_Node")
         
         self.temporal_memory = [] # Buffer for CAMS fusion
 
-    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = None) -> AnalysisResult:
+    def run(self, raw_bytes: bytes, audio_bytes: np.ndarray = None, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = None) -> AnalysisResult:
         if geo_region and geo_region != self.geo_region:
             self.geo_region = geo_region
             self.stochastic_math = StochasticHiveMind(geo_region=geo_region)
@@ -94,6 +97,7 @@ class AnalysisPipeline:
         diseases = {}
         thermal_metrics = None
         swarm_relay_status = "Offline"
+        acoustic_metrics = {}
 
         # 4. Thermal Intelligence
         if thermal_matrix is not None:
@@ -160,6 +164,10 @@ class AnalysisPipeline:
             if swarm_data["prediction"] != "STABLE":
                 swarming_risk = f"{swarm_data['prediction']} ({swarm_data['time_to_event']})"
 
+            # 6. Multi-Modal Acoustic Fusion
+            if audio_bytes is not None:
+                acoustic_metrics = self.acoustic_brain.process_telemetry(audio_bytes, report)
+
             # Disease Analysis
             diseases = {
                 "dwv": self.disease_brain.analyze_dwv_asymmetry(None),
@@ -184,6 +192,7 @@ class AnalysisPipeline:
             brood_heart_temp_c=thermal_metrics["nest_temp"] if thermal_metrics else 0.0,
             brood_heart_health_score=self.thermal_brain.calculate_health_index(thermal_metrics) if thermal_metrics else 0.0,
             swarm_relay_status=swarm_relay_status,
+            acoustic_metrics=acoustic_metrics,
             diseases=diseases,
             detections=all_detections
         )
@@ -191,6 +200,6 @@ class AnalysisPipeline:
 # Singleton
 _pipeline = AnalysisPipeline()
 
-def analyze_image(raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = "temperate") -> AnalysisResult:
-    return _pipeline.run(raw_bytes, thermal_matrix=None, mode=mode, geo_region=geo_region)
+def analyze_image(raw_bytes: bytes, audio_data: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = "temperate") -> AnalysisResult:
+    return _pipeline.run(raw_bytes, audio_bytes=audio_data, thermal_matrix=None, mode=mode, geo_region=geo_region)
 
