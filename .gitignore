@@ -26,3 +26,6 @@ remotes_full.txt
 remotes_list.txt
 remotes_list_full.txt
 remotes_full.txt
+
+# Secrets
+**/*google-services.json
