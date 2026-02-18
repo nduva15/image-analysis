@@ -161,6 +161,7 @@ async def health():
 async def analyze(
     file: UploadFile = File(..., description="Hive image (JPG/PNG/BMP/TIFF/WebP)"),
     mode: AnalysisMode = Query(AnalysisMode.STANDARD),
+    geo_region: str = Query("temperate", description="Climatic region for SDE calibration (temperate/tropical)"),
     confidence: float = Query(0.35, ge=0.1, le=0.99),
     enhance: bool = Query(True, description="Apply CLAHE contrast enhancement"),
 ):
@@ -178,7 +179,7 @@ async def analyze(
         raise HTTPException(413, f"Image exceeds {MAX_IMAGE_MB}MB limit")
 
     try:
-        result = _analyze_image(raw, mode=mode, confidence=confidence, enhance=enhance)
+        result = _analyze_image(raw, mode=mode, confidence=confidence, enhance=enhance, geo_region=geo_region)
     except ValueError as e:
         raise HTTPException(422, str(e))
 

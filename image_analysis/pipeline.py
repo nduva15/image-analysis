@@ -61,13 +61,14 @@ class AnalysisResult:
 class AnalysisPipeline:
     """The unified 'Brain' of Image Analysis."""
 
-    def __init__(self):
+    def __init__(self, geo_region="temperate"):
+        self.geo_region = geo_region
         self.mite_detector = MiteDetector()
         self.bee_classifier = BeeClassifier()
         self.entrance_monitor = EntranceMonitor()
         
         # Advanced Intelligence Modules
-        self.stochastic_math = StochasticHiveMind()
+        self.stochastic_math = StochasticHiveMind(geo_region=geo_region)
         self.qmp_simulator = QMPSimulator()
         self.swarm_brain = SwarmIntelligence()
         self.disease_brain = DiseaseAnalyzer()
@@ -76,7 +77,11 @@ class AnalysisPipeline:
         
         self.temporal_memory = [] # Buffer for CAMS fusion
 
-    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA) -> AnalysisResult:
+    def run(self, raw_bytes: bytes, thermal_matrix: np.ndarray = None, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = None) -> AnalysisResult:
+        if geo_region and geo_region != self.geo_region:
+            self.geo_region = geo_region
+            self.stochastic_math = StochasticHiveMind(geo_region=geo_region)
+            
         start_time = time.perf_counter()
         
         # Initialize advanced metrics
@@ -186,6 +191,6 @@ class AnalysisPipeline:
 # Singleton
 _pipeline = AnalysisPipeline()
 
-def analyze_image(raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA) -> AnalysisResult:
-    return _pipeline.run(raw_bytes, mode)
+def analyze_image(raw_bytes: bytes, mode: AnalysisMode = AnalysisMode.SOTA, geo_region: str = "temperate") -> AnalysisResult:
+    return _pipeline.run(raw_bytes, thermal_matrix=None, mode=mode, geo_region=geo_region)
 
