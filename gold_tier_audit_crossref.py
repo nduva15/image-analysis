@@ -93,9 +93,9 @@ class CrossReferenceAuditor:
 
 def main():
     parser = argparse.ArgumentParser(description="Multimodal Gold Tier Auditor.")
-    parser.add_argument("--manifest", default="output/gold_tier_manifest.csv", help="Visual manifest path")
+    parser.add_argument("--manifest", default="output/master_gold_collection/master_gold_tier_manifest.csv", help="Visual manifest path")
     parser.add_argument("--logs", default="audio_analysis/data/telemetry.csv", help="Audio telemetry path")
-    parser.add_argument("--output", default="output", help="Output directory")
+    parser.add_argument("--output", default="output/master_gold_collection", help="Output directory")
     args = parser.parse_args()
 
     output_dir = Path(args.output)

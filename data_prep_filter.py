@@ -25,13 +25,17 @@ sys.path.append(str(Path(__file__).parent))
 class ScientificAuditor:
     """Automated Quality Control for the 400k Dataset - Kaggle Edition."""
     
-    def __init__(self, high_precision_threshold=800, entropy_threshold=7.2, laplacian_threshold=600, saliency_threshold=0.5):
+    def __init__(self, high_precision_threshold=800, entropy_threshold=5.0, laplacian_threshold=100, saliency_threshold=0.1):
         self.high_precision_threshold = high_precision_threshold
         self.entropy_threshold = entropy_threshold
         self.laplacian_threshold = laplacian_threshold
         self.saliency_threshold = saliency_threshold
         # SOTA: Initialize Saliency detector
-        self.saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+        self.saliency_available = True
+        try:
+            self.saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+        except AttributeError:
+            self.saliency_available = False
 
     def calculate_scientific_score(self, image: np.ndarray):
         """
@@ -51,8 +55,11 @@ class ScientificAuditor:
         entropy = -np.sum(marg * np.log2(marg + 1e-7))
 
         # 3. Saliency Mapping for Signal Prominence
-        success, saliency_map = self.saliency.computeSaliency(image)
-        saliency_mean = np.mean(saliency_map) if success else 0.0
+        if self.saliency_available:
+            success, saliency_map = self.saliency.computeSaliency(image)
+            saliency_mean = np.mean(saliency_map) if success else 0.0
+        else:
+            saliency_mean = 0.0
         
         # 4. Gold Tier Selection Logic
         is_gold = (sharpness > self.laplacian_threshold and 
@@ -64,7 +71,7 @@ class ScientificAuditor:
         
         return score, is_gold, sharpness, entropy, saliency_mean
 
-def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, move: bool = False):
+def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, move: bool = False, prefix: str = ""):
     try:
         image = cv2.imread(str(img_path))
         if image is None:
@@ -80,7 +87,8 @@ def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, 
         else:
             category = "standard"
             
-        target_path = output_dir / category / img_path.name
+        target_name = f"{prefix}_{img_path.name}" if prefix else img_path.name
+        target_path = output_dir / category / target_name
         target_path.parent.mkdir(parents=True, exist_ok=True)
         
         if move:
@@ -88,7 +96,7 @@ def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, 
         else:
             shutil.copy2(str(img_path), str(target_path))
             
-        return (img_path.name, score, is_gold, sharpness, entropy, saliency)
+        return (target_name, score, is_gold, sharpness, entropy, saliency)
     except Exception as e:
         return f"Error: {e}"
 
@@ -98,36 +106,53 @@ def main():
     parser.add_argument("output", help="Directory to store sorted images")
     parser.add_argument("--move", action="store_true", help="Move instead of copy")
     parser.add_argument("--workers", type=int, default=8, help="Parallel workers")
+    parser.add_argument("--prefix", default="", help="Prefix for output filenames")
+    parser.add_argument("--manifest_name", default="gold_tier_manifest.csv", help="Name of the output manifest")
     args = parser.parse_args()
 
     input_dir = Path(args.input)
     output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
     auditor = ScientificAuditor()
     
     exts = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tiff"}
     files = [f for f in input_dir.rglob("*") if f.suffix.lower() in exts]
     
+    if not files:
+        print(f"❌ Error: No images found in {input_dir}")
+        return
+    
     print(f"📊 Auditing {len(files)} images for SOTA scientific selection...")
     
     results_data = []
+    success_count = 0
+    fail_count = 0
+    gold_count = 0
+    
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
-        futures = {executor.submit(process_image, f, output_dir, auditor, args.move): f for f in files}
+        futures = {executor.submit(process_image, f, output_dir, auditor, args.move, args.prefix): f for f in files}
         for future in tqdm(futures, total=len(files)):
             res = future.result()
             if isinstance(res, tuple):
                 results_data.append(res)
+                success_count += 1
+                if res[2]: # is_gold
+                    gold_count += 1
+            else:
+                fail_count += 1
 
     # Generate Kaggle Manifest for 'Gold Tier' weights
     results_data.sort(key=lambda x: x[1], reverse=True) # Sort by score
-    gold_manifest = results_data[:20000]
     
-    manifest_path = output_dir / "gold_tier_manifest.csv"
+    manifest_path = output_dir / args.manifest_name
     with open(manifest_path, "w") as f:
         f.write("filename,score,is_gold,sharpness,entropy,saliency\n")
-        for r in gold_manifest:
+        for r in results_data:
             f.write(f"{r[0]},{r[1]:.4f},{r[2]},{r[3]:.4f},{r[4]:.4f},{r[5]:.4f}\n")
 
-    print(f"\n✅ Scientific Audit complete. Manifest generated: {manifest_path}")
+    print(f"\n✅ Audit complete for {input_dir.name}")
+    print(f"📈 Total: {len(files)} | Success: {success_count} | Failed: {fail_count} | Gold Tier: {gold_count}")
+    print(f"📂 Manifest: {manifest_path}")
     print(f"✨ Master Collection: Isolated top 20,000 images for JFST-DETR calibration.")
 
 if __name__ == "__main__":

@@ -136,6 +136,7 @@ image-analysis/
 │
 ├── training_config.yaml             (JFST-DETR / Focaler-IoU Config)
 ├── data_prep_filter.py              (Scientific Auditor / Gold Tier)
+├── kaggle_batch_audit.py            (Multi-Dataset Batch Orchestrator)
 ├── gold_tier_audit_crossref.py      (Multimodal Acoustic Cross-Ref)
 └── tensorrt_converter.py            (INT8 Optimization Tool)
 ```

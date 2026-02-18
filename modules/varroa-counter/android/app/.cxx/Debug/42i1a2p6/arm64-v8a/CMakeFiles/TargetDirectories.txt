@@ -1,3 +1,0 @@
-/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/42i1a2p6/arm64-v8a/CMakeFiles/rebuild_cache.dir
-/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/42i1a2p6/arm64-v8a/CMakeFiles/edit_cache.dir
-/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/42i1a2p6/arm64-v8a/CMakeFiles/varroa_counter.dir

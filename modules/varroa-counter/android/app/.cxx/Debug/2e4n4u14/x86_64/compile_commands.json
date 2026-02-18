@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/2e4n4u14/x86_64",
-  "command": "/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dvarroa_counter_EXPORTS -I/Users/joaquinblanco/Developer/OpenCv/OpenCV-android-sdk/sdk/native/jni/include -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/Vatorex -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/EllipsisDetector -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/EllipsisDetector/impl -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security -stdlib=libc++ -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles/varroa_counter.dir/native-lib.cpp.o -c /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/native-lib.cpp",
-  "file": "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/native-lib.cpp"
-}
-]

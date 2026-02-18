@@ -1,1 +1,0 @@
-ninja: error: '/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/arm64-v8a/EllipsisDetector/libEllipsisDetector.a', needed by '/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/build/app/intermediates/cxx/Debug/v6v1ga19/obj/arm64-v8a/libvarroa_counter.so', missing and no known rule to make it

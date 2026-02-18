@@ -1,2 +1,0 @@
-ninja: Entering directory `/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/ck136a22/arm64-v8a'
-ninja: no work to do.
