@@ -1,4 +1,4 @@
-# Image Analysis: Biophysical Orchestration Engine
+# Image Analysis
 
 Image Analysis is a precision apiculture operating system designed for the proactive, mathematical prediction of colony dynamics. It integrates stochastic eco-epidemiology, 2026-SOTA vision transformers, and autonomous edge load-balancing to move apiculture beyond reactive observation into a state of **Biophysical Orchestration**.
 
