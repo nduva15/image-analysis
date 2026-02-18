@@ -95,18 +95,25 @@ def run_audit():
     all_data = []
     for m in manifests:
         if m.exists():
-            all_data.append(pd.read_csv(m))
+            df = pd.read_csv(m)
+            if not df.empty:
+                all_data.append(df)
+            else:
+                print(f"⚠️ Warning: Manifest {m.name} is empty.")
             
     if all_data:
         master_df = pd.concat(all_data, ignore_index=True)
+        print(f"📊 Global Pool size: {len(master_df)} candidates.")
+        
         master_df = master_df.sort_values(by="score", ascending=False).head(20000)
         
         master_path = output_base / "master_gold_tier_manifest.csv"
         master_df.to_csv(master_path, index=False)
         print(f"✨ Master Collection Complete: {len(master_df)} Gold Tier assets indexed.")
+        print(f"🏆 Top 5 Scores:\n{master_df[['filename', 'score']].head(5)}")
         print(f"📂 Master Manifest: {master_path}")
     else:
-        print("❌ Error: No audit data collected.")
+        print("❌ Error: No audit data collected. Verify that images are actually being read in data_prep_filter.py.")
 
     print("\n🚀 Next step: Run gold_tier_audit_crossref.py on the consolidated manifest.")
 

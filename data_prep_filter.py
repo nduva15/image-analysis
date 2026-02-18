@@ -25,7 +25,7 @@ sys.path.append(str(Path(__file__).parent))
 class ScientificAuditor:
     """Automated Quality Control for the 400k Dataset - Kaggle Edition."""
     
-    def __init__(self, high_precision_threshold=800, entropy_threshold=7.2, laplacian_threshold=600, saliency_threshold=0.5):
+    def __init__(self, high_precision_threshold=800, entropy_threshold=5.0, laplacian_threshold=100, saliency_threshold=0.1):
         self.high_precision_threshold = high_precision_threshold
         self.entropy_threshold = entropy_threshold
         self.laplacian_threshold = laplacian_threshold
@@ -125,12 +125,21 @@ def main():
     print(f"📊 Auditing {len(files)} images for SOTA scientific selection...")
     
     results_data = []
+    success_count = 0
+    fail_count = 0
+    gold_count = 0
+    
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = {executor.submit(process_image, f, output_dir, auditor, args.move, args.prefix): f for f in files}
         for future in tqdm(futures, total=len(files)):
             res = future.result()
             if isinstance(res, tuple):
                 results_data.append(res)
+                success_count += 1
+                if res[2]: # is_gold
+                    gold_count += 1
+            else:
+                fail_count += 1
 
     # Generate Kaggle Manifest for 'Gold Tier' weights
     results_data.sort(key=lambda x: x[1], reverse=True) # Sort by score
@@ -141,7 +150,9 @@ def main():
         for r in results_data:
             f.write(f"{r[0]},{r[1]:.4f},{r[2]},{r[3]:.4f},{r[4]:.4f},{r[5]:.4f}\n")
 
-    print(f"\n✅ Scientific Audit complete. Manifest generated: {manifest_path}")
+    print(f"\n✅ Audit complete for {input_dir.name}")
+    print(f"📈 Total: {len(files)} | Success: {success_count} | Failed: {fail_count} | Gold Tier: {gold_count}")
+    print(f"📂 Manifest: {manifest_path}")
     print(f"✨ Master Collection: Isolated top 20,000 images for JFST-DETR calibration.")
 
 if __name__ == "__main__":
