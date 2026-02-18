@@ -21,11 +21,11 @@ from better_engine.core.image_processing import decode_image, assess_blur, enhan
 from better_engine.core.vitality import Detection, compute_colony_report, ColonyReport
 from better_engine.core.math.stochastic_vitality import StochasticHiveMind
 from better_engine.core.math.pheromone_modeling import QMPSimulator
-
-# Using updated detectors (Stubs until weights are loaded)
+from better_engine.core.math.swarm_intelligence import SwarmIntelligence
 from better_engine.detectors.mite_detector import MiteDetector
 from better_engine.detectors.bee_classifier import BeeClassifier
 from better_engine.detectors.entrance_monitor import EntranceMonitor
+from better_engine.detectors.disease_analyzer import DiseaseAnalyzer
 from better_engine.core.thermal.thermal_intelligence import BroodHeartAnalyzer
 from better_engine.networking.swarm_relay import NeuralSwarmRelay
 
@@ -47,9 +47,12 @@ class BetterAnalysisResult:
     collapse_probability: float = 0.0
     qmp_stability: float = 1.0
     swarming_risk: str = "Stable"
+    swarm_pulse: float = 0.0
+    aarf_days: float = 14.0
     brood_heart_temp_c: float = 0.0
     brood_heart_health_score: float = 0.0
     swarm_relay_status: str = "Offline"
+    diseases: dict[str, float] = field(default_factory=dict)
     
     detections: list[Detection] = field(default_factory=list)
     metadata: dict = field(default_factory=dict)
@@ -65,6 +68,8 @@ class BetterAnalysisPipeline:
         # Advanced Intelligence Modules
         self.stochastic_math = StochasticHiveMind()
         self.qmp_simulator = QMPSimulator()
+        self.swarm_brain = SwarmIntelligence()
+        self.disease_brain = DiseaseAnalyzer()
         self.thermal_brain = BroodHeartAnalyzer()
         self.swarm_relay = NeuralSwarmRelay(node_id="Master_Node")
         
@@ -124,15 +129,29 @@ class BetterAnalysisPipeline:
             h0 = report.healthy_count * 50 # Heuristic scaling
             f0 = entrance_stats.bees_entering * 10 
             
-            h_paths, f_paths = self.stochastic_math.simulate_path(h0, f0, death_rate)
+            h_paths, f_paths, aarf_paths = self.stochastic_math.simulate_path(h0, f0, death_rate)
             collapse_prob = self.stochastic_math.collapse_probability(h_paths, f_paths)
+            aarf_days = float(np.mean(aarf_paths[:, -1]))
             
             # Pheromone Analysis
-            density = min(1.0, report.healthy_count / 100.0)
+            density = min(1.0, report.healthy_count / (len(all_detections) + 1e-6))
             qmp_stability = self.qmp_simulator.estimate_qmp_stability(
-                report.healthy_count, density, 0.05 # 5% fanning default
+                report.healthy_count, density, 0.05
             )
             swarming_risk = self.qmp_simulator.forecast_queen_cells([qmp_stability] * 10)
+            
+            # Swarm Pulse
+            self.swarm_brain.update_telemetry(density, 0.5) # Simulating constant acoustic for now
+            swarm_alert, swarm_pulse = self.swarm_brain.get_swarm_alert_level()
+            if swarm_alert != "Stable":
+                swarming_risk = swarm_alert
+
+            # Disease Analysis
+            diseases = {
+                "dwv": self.disease_brain.analyze_dwv_asymmetry(None),
+                "pesticide": self.disease_brain.detect_pesticide_tremors([0.1]*10),
+                "nosema": self.disease_brain.calculate_nosema_index(density, 0.0)
+            }
 
         elapsed = (time.perf_counter() - start_time) * 1000
         
@@ -144,10 +163,13 @@ class BetterAnalysisPipeline:
             report=report,
             collapse_probability=round(collapse_prob, 4),
             qmp_stability=round(qmp_stability, 3),
-            swarming_risk=thermal_metrics["swarming_risk"] if thermal_metrics else swarming_risk,
+            swarming_risk=thermal_metrics["swarming_risk"] if thermal_metrics and thermal_metrics["swarming_risk"] != "Low" else swarming_risk,
+            swarm_pulse=round(swarm_pulse, 4),
+            aarf_days=round(aarf_days, 1),
             brood_heart_temp_c=thermal_metrics["nest_temp"] if thermal_metrics else 0.0,
             brood_heart_health_score=self.thermal_brain.calculate_health_index(thermal_metrics) if thermal_metrics else 0.0,
             swarm_relay_status=swarm_relay_status,
+            diseases=diseases,
             detections=all_detections
         )
 

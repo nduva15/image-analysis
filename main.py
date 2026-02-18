@@ -71,9 +71,12 @@ class VitalityOut(BaseModel):
     collapse_probability: float
     qmp_stability: float
     swarming_risk: str
+    swarm_pulse: float
+    aarf_days: float
     brood_heart_temp_c: float
     brood_heart_health_score: float
     swarm_relay_status: str
+    diseases: dict[str, float]
 
 
 class AnalysisOut(BaseModel):
@@ -112,9 +115,12 @@ def _to_response(result: BetterAnalysisResult) -> AnalysisOut:
             collapse_probability=result.collapse_probability,
             qmp_stability=result.qmp_stability,
             swarming_risk=result.swarming_risk,
+            swarm_pulse=result.swarm_pulse,
+            aarf_days=result.aarf_days,
             brood_heart_temp_c=result.brood_heart_temp_c,
             brood_heart_health_score=result.brood_heart_health_score,
             swarm_relay_status=result.swarm_relay_status,
+            diseases=result.diseases,
         ),
     )
 
