@@ -109,10 +109,16 @@ def main():
 
     input_dir = Path(args.input)
     output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
     auditor = ScientificAuditor()
     
     exts = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tiff"}
     files = [f for f in input_dir.rglob("*") if f.suffix.lower() in exts]
+    
+    if not files:
+        print(f"❌ Error: No images found in {input_dir}")
+        print(f"📂 Current directory contents: {[str(p.name) for p in input_dir.glob('*')]}")
+        return
     
     print(f"📊 Auditing {len(files)} images for SOTA scientific selection...")
     
