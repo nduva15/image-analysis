@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 import subprocess
 
-# Unified list of datasets provided by User
+# Unified list of datasets and notebook outputs provided by User
 DATASETS = [
     "birdy654/bee-detection-in-the-wild",
     "jonathanbyrne/to-bee-or-not-to-bee",
@@ -20,16 +20,29 @@ DATASETS = [
     "ashfaqsyed/bees-dataset",
     "kport354041/honeybee-positions",
     "ivanfel/honey-bee-pollen",
-    "jenny18/honey-bee-annotated-images"
+    "jenny18/honey-bee-annotated-images",
+    # Notebook Refinement Sources
+    "xiangtic/honey-bee-colonies-and-the-use-of-neonicotinoids",
+    "dmitrypukhov/honey-bee-health-detection-with-cnn",
+    "gpiosenka/bees-f1-score-95",
+    "jyotidabas/honey-bees-data-analysis",
+    "nadaahassan/na-ve-bees-predict-species-from-images"
 ]
 
 def resolve_path(slug):
-    """Kaggle mounts datasets either at /kaggle/input/slug or /kaggle/input/username/slug or /kaggle/input/datasets/username/slug."""
+    """
+    Kaggle mounts datasets/notebooks either at:
+    - /kaggle/input/slug
+    - /kaggle/input/name
+    - /kaggle/input/datasets/slug
+    - /kaggle/input/notebooks/slug
+    """
     name = slug.split("/")[-1]
     candidates = [
         Path("/kaggle/input") / name,
         Path("/kaggle/input") / slug,
         Path("/kaggle/input/datasets") / slug,
+        Path("/kaggle/input/notebooks") / slug,
     ]
     for c in candidates:
         if c.exists():
