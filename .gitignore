@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.venv/
+**/venv/
+**/env/
+**/.env
+
+# Weights
+weights/
+**/*.pt
+**/*.h5
+**/*.onnx
+
+# Data
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+remotes_full.txt
+remotes_list.txt
+remotes_list_full.txt
+remotes_full.txt
