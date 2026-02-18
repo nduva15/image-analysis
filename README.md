@@ -118,8 +118,9 @@ image-analysis/
 │   ├── detectors/                   (JFST-DETR / Disease Biometry)
 │   └── networking/                  (P2P Swarm Relay)
 │
+├── audio_analysis/                  (BEE-SOUND-ANALYSIS Research Core)
+│
 ├── modules/
-│   ├── audio_analysis/              (BEE-SOUND-ANALYSIS Research Core)
 │   └── ...                          (18+ Integrated Labs)
 ```
 
