@@ -1,90 +1,95 @@
-# BetterBee Analysis: Biocybernetic Intelligence System
+# BetterBee Analysis: Biocybernetic Monitoring System
 
-## Research Overview
+## Scientific Overview
 BetterBee Analysis is a precision apiculture operating system designed for large-scale apiary management. It synthesizes stochastic population modeling, epidemiological differential equations, and 2026-state-of-the-art (SOTA) small-target vision transformers. This system is engineered to process 400,000+ high-resolution clinical images to predict colony health trajectories.
 
 ---
 
-## 1. Biocybernetic Intelligence Core
+## 1. Governance Architecture: The Ghost Edge
 
-### 1.1 Stochastic Population Dynamics (SDEs)
-We implement the Euler-Maruyama integration method for Stochastic Differential Equations (SDEs) to model the Hive Bee ($H$) and Forager ($F$) populations under environmental volatility ($\sigma$).
+To maximize computational efficiency and data privacy, BetterBee utilizes a Symmetric Remote-Compute Architecture known as **Ghost Edge**.
 
-#### Biological Drift (ODE Component):
-$$ \frac{dH}{dt} = L - 0.1H - \alpha H \cdot R(F, H) $$
-$$ \frac{dF}{dt} = \alpha H \cdot R(F, H) - m \cdot F $$
-
-Where $R(F, H)$ is the **Social Inhibition Function**:
-$$ R(F, H) = \frac{1}{1 + (F/H)^2} $$
-
-#### Stochastic Diffusion (Environmental Noise):
-We apply Ito Calculus to account for real-world perturbations:
-$$ dX_t = \mu(X_t, t)dt + \sigma(X_t, t)dW_t $$
-This allows the engine to calculate a **Collapse Probability** ($P_{collapse}$) rather than a binary status, indicating the statistical likelihood of viability within a 30-day window.
-
-### 1.2 Queen Pheromone Stability (QMP)
-The system simulates the distribution of Queen Mandibular Pheromone (QMP) across the hive. 
-$$ C_{qmp}(t) = C_0 \cdot e^{-\lambda / \tau} $$
-Where $\tau$ (transmission efficiency) is a function of bee density and behavioral fanning detected by the Vision AI. A drop in $C_{qmp}$ below a critical threshold triggers a **Swarming Prediction** 48 hours before visual queen cells are present.
-
-### 1.3 Thermal Brood-Heart Stability
-Using infrared spatial gradient analysis, we track the thermal core of the brood nest.
-$$ \text{Thermal Tightness} = \frac{1}{\text{Var}(\text{Thermal Matrix}) + \epsilon} $$
-A tightness score above the threshold indicates a concentrated brood mass and a high-performing queen.
+| Component | Logic | Storage |
+| --- | --- | --- |
+| **Local Edge (Hive)** | FP16/INT8 Stream Processing (TensorRT) | Volatile RAM only (Zero-disk footprint) |
+| **Remote Intelligence** | Kaggle Notebooks (API-Linked) | 400k Dataset + Weight Backups |
+| **Communication** | Protobuf-compressed telemetry | Metadata only (Coordinates & Scores) |
 
 ---
 
-## 2. Computer Vision: JFST-DETR Architecture
+## 2. Intelligence Core: Bio-Calculus and SDEs
 
-Standard object detection models fail to resolve Varroa mites ($< 10$ pixels). Our implementation uses **JFST-DETR** (Jujube-Fruit-Small-Target DETR) which features:
+### 2.1 Stochastic CCD Modeling (SIRS-CCD)
+We implement a Stochastic SIRS (Susceptible-Infected-Recovered-Susceptible) model to account for Colony Collapse Disorder dynamics. The system monitors the **Accelerated Age of Recruitment for Foragers (AARF)**. 
 
-- **Global Awareness Adaptive Module (GAAM-v2):** Uses Cross-Attention Multi-Scale (CAMS) features to maintain temporal persistence of target textures across video frames.
-- **Spatial Enhancement Pyramid Network (SEPN):** Restores high-resolution spatial features lost in standard deep-layer convolutions.
+#### Governance Equations:
+The transition from Hive Bees ($H$) to Foragers ($F$) is modeled using:
+$$ \frac{dH}{dt} = L(X_t, t) - 0.1H - \alpha H \cdot R(F, H) + \sigma H dW_t $$
+$$ \frac{dF}{dt} = \alpha H \cdot R(F, H) - m \cdot F + \sigma F dW_t $$
+
+Where:
+- $L$: Logistic Brood Growth (Eggs per day).
+- $\sigma dW_t$: Brownian Motion representing environmental stochasticity.
+- $R(F, H)$: Social Inhibition Factor ($\frac{1}{1+(F/H)^2}$).
+
+If the AARF drops below 10 days, the engine predicts a population collapse 20 days before visual indicators appear.
+
+### 2.2 Swarm Intelligence Integration
+The Biophysical Swarm Pulse (BSP) algorithm analyzes the derivative of acoustic power ($P_{acoustic}$) and visual density ($\rho_{visual}$).
+$$ \text{Swarm Pulse} = \frac{d\rho_{visual}}{dt} \cdot \frac{dP_{acoustic}}{dt} $$
+A synchronized spike in the visual-acoustic derivative indicates swarm initiation.
 
 ---
 
-## 3. Neural Swarm Routing (NSR)
+## 3. Disease Prediction Matrix
 
-To optimize edge computation on Raspberry Pi and Jetson platforms, we implement an autonomous load-balancing protocol.
+Using biomarkers identified via vision AI, BetterBee predicts pathogen loads with high fidelity.
 
-- **Load Balancing Logic:** If local CPU/GPU utilization exceeds 85%, high-precision inference tasks are serialized via Protobuf and routed to idle nodes in the local Neural Swarm.
-- **Dynamic Glimpse Scaling:** Low-power models scan traffic flow rates and only trigger full transformer analysis when a behavioral anomaly or parasite density spike is detected.
+| Disease | Visual Biomarker | ML Detection Method | Prediction Logic |
+| --- | --- | --- | --- |
+| **Varroa** | Phoretic mite presence | JFST-DETR (Small Object) | Mite-to-Bee Ratio + $R_0$ calculation |
+| **DWV** | Wing asymmetry | Keypoint R-CNN | Symmetry Variance Analysis |
+| **Pesticide** | Tremors / Unstable Fanning | FFT Spectral Analysis | Wing-beat frequency shift |
+| **Nosema** | Abnormal Defecation | Temporal LSTM | Flow-rate reduction vs. Temp delta |
 
 ---
 
-## 4. Development Roadmap and Progress Tracking
+## 4. Computer Vision: JFST-DETR + Temporal Encoding
 
-### Phase 0: Framework and Intelligence Core (Completed)
-- [x] Unification of 19 research repositories into a single monolithic package.
-- [x] Implementation of Eco-Epidemiological ODE/SDE solvers.
-- [x] Integration of Spectral Acoustic Analysis for hornet discrimination.
-- [x] Development of the Thermal Brood-Heart and Pheromone modeling modules.
-- [x] Deployment of the FastAPI transport layer.
+BetterBee implements **JFST-DETR** (Jujube-Fruit-Small-Target DETR) for resolution of sub-10px targets.
 
-### Phase 1: Data Audit and Gold Standard Extraction (In Progress)
-- [x] Development of the Gold Standard Extractor ($Laplacian > 600$, $Contrast > 40$).
+- **GAAM-v2 (CAMS):** Cross-Attention Multi-Scale features for temporal persistence.
+- **Temporally Encoded Motion (TEM):** Analyzes frame-to-frame vibration signatures to clarify blurry mite signals.
+- **Gaussian Heatmap Regression:** Pinpoints mite centroids for sub-pixel density accuracy.
+
+---
+
+## 5. Development Roadmap: 2026 Objective
+
+### Phase 1: Data Audit and Gold Standard Extraction
+- [x] Development of the Scientific Auditor (Laplacian + Shannon Entropy).
 - [ ] Execution of image audit on the 400,000 image dataset.
 - [ ] Label conversion to normalized YOLOv11/DETR formats.
 
-### Phase 2: SOTA Training (Planned)
+### Phase 2: SOTA Training
 - [ ] Training JFST-DETR on the High-Precision Gold Standard subset.
-- [ ] Hyperparameter optimization via Optuna for stochastic $\alpha$ and $\sigma$ parameters.
-- [ ] Export to TensorRT FP16/INT8 for Jetson Orin Nano deployment.
+- [ ] Calibration of Stochastic ODE parameters using agrometeorological integration.
+- [ ] Export to TensorRT for Ghost Edge deployment.
 
 ---
 
-## 5. Technical Structure
+## 6. Technical Structure
 
 ```text
 image-analysis/
 ├── training_config.yaml             (JFST-DETR Small-Object Configuration)
-├── gold_standard_extractor.py       (Scientific Quality Audit Tool)
+├── data_prep_filter.py              (Scientific Auditor Tool)
 │
 ├── better_engine/                   (Biocybernetic Core)
 │   ├── core/
 │   │   ├── math/
 │   │   │   ├── stochastic_vitality.py
-│   │   │   ├── pheromone_modeling.py
+│   │   │   ├── swarm_intelligence.py
 │   │   │   └── vitality_core.py
 │   │   ├── thermal/
 │   │   │   └── thermal_intelligence.py
@@ -93,14 +98,7 @@ image-analysis/
 │   │   ├── small_object/
 │   │   │   ├── gaam_module.py
 │   │   │   └── sepn_net.py
-│   │   ├── entrance/
-│   │   ├── classifiers/
 │   │   └── acoustics/
 │   └── networking/
 │       └── swarm_relay.py           (Neural Swarm Load Balancing)
 ```
-
----
-
-## 6. Licensing and Attribution
-This project integrates research from 19 distributed GitHub repositories. Full attribution and original license files are maintained within the `modules/` directory. All proprietary extensions in `better_engine/core/` are the intellectual property of BetterBee Analysis.
