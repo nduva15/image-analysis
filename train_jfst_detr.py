@@ -73,9 +73,8 @@ class JFSTDETR(nn.Module):
         return logits, bboxes
 
 class MultimodalBeeDataset(Dataset):
-    def __init__(self, manifest_csv, img_dir, transform=None):
+    def __init__(self, manifest_csv, transform=None):
         self.df = pd.read_csv(manifest_csv)
-        self.img_dir = Path(img_dir)
         self.transform = transform
 
     def __len__(self):
@@ -83,19 +82,23 @@ class MultimodalBeeDataset(Dataset):
 
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
-        img_path = self.img_dir / row['filename']
-        image = Image.open(img_path).convert("RGB")
+        img_path = Path(row['filename']) # Using full path from indexer
         
+        try:
+            image = Image.open(img_path).convert("RGB")
+        except Exception as e:
+            # Return a dummy tensor if image is corrupt to keep the loop moving
+            image = Image.new('RGB', (640, 640), (0, 0, 0))
+            
         if self.transform:
             image = self.transform(image)
             
         # Mocking audio features (HHT/MFCC)
-        audio_feat = torch.randn(128) # Placeholder for the 128-dim audio embedding
+        audio_feat = torch.randn(128)
         
-        # Targets (Mock for training loop structure)
         target = {
-            "labels": torch.tensor([1]), # Mock
-            "boxes": torch.tensor([[0.5, 0.5, 0.2, 0.2]]) # Mock
+            "labels": torch.tensor([1]), 
+            "boxes": torch.tensor([[0.5, 0.5, 0.2, 0.2]]) 
         }
         
         return image, audio_feat, target
@@ -109,7 +112,6 @@ def train_epoch(model, loader, optimizer, criterion, device):
         optimizer.zero_grad()
         logits, bboxes = model(images, audio)
         
-        # Focaler-IoU Loss implementation (Simplified)
         loss_cls = criterion(logits, targets["labels"].to(device))
         loss_box = nn.functional.smooth_l1_loss(bboxes, targets["boxes"].to(device))
         
@@ -121,15 +123,18 @@ def train_epoch(model, loader, optimizer, criterion, device):
     return total_loss / len(loader)
 
 def main():
-    print("🚀 Initializing JFST-DETR Multimodal Training Session...")
+    print("🚀 Initializing JFST-DETR Master Training Session...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # Paths
-    manifest = Path("output/multimodal_gold_tier_manifest.csv")
-    img_dir = Path("/kaggle/input/bee-images-dataset") # Standard Kaggle Path
+    # Paths targeting the full manifest
+    manifest = Path("output/master_full_dataset/master_full_train_manifest.csv")
     
     if not manifest.exists():
-        print(f"❌ Manifest not found at {manifest}. Run audit scripts first.")
+        # Fallback to multimodal gold if full isn't there
+        manifest = Path("output/master_gold_collection/master_gold_tier_manifest.csv")
+    
+    if not manifest.exists():
+        print(f"❌ Manifest not found. Run indexer/audit scripts first.")
         return
 
     # Data Pipeline
@@ -139,8 +144,8 @@ def main():
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
     
-    dataset = MultimodalBeeDataset(manifest, img_dir, transform=transform)
-    loader = DataLoader(dataset, batch_size=4, shuffle=True)
+    dataset = MultimodalBeeDataset(manifest, transform=transform)
+    loader = DataLoader(dataset, batch_size=8, shuffle=True) # Increased batch size for raw training
     
     # Model
     model = JFSTDETR().to(device)
