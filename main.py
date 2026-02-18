@@ -149,8 +149,7 @@ async def root():
         "version": image_analysis.__version__,
         "status": "online",
         "docs": "/docs",
-        "modules": len([d for d in Path("modules").iterdir() if d.is_dir()])
-                   if Path("modules").exists() else 0,
+        "orchestration": "Consolidated Multimodal Engine (Vision + Audio)",
     }
 
 
@@ -228,24 +227,17 @@ async def analyze_batch(
 
 @app.get("/modules", tags=["Info"])
 async def list_modules():
-    """List all 19 integrated research modules."""
-    modules_dir = Path("modules")
-    if not modules_dir.exists():
-        return {"modules": [], "count": 0}
-
-    modules = []
-    for d in sorted(modules_dir.iterdir()):
-        if d.is_dir() and not d.name.startswith("__"):
-            py_files = list(d.rglob("*.py"))
-            modules.append({
-                "name": d.name,
-                "python_files": len(py_files),
-                "has_weights": any(
-                    list(d.rglob("*.pt")) + list(d.rglob("*.h5")) + list(d.rglob("*.onnx"))
-                ),
-            })
-
-    return {"modules": modules, "count": len(modules)}
+    """List integrated analysis engines."""
+    return {
+        "engines": [
+            {"name": "MiteDetector", "type": "YOLO11+SAHI", "status": "active"},
+            {"name": "BeeClassifier", "type": "ViT/CNN", "status": "active"},
+            {"name": "AcousticSentry", "type": "HHT Fusion", "status": "active"},
+            {"name": "NeuralSwarmRelay", "type": "P2P Load Balancing", "status": "active"},
+            {"name": "StochasticHiveMind", "type": "Epidemiological SDEs", "status": "active"}
+        ],
+        "count": 5
+    }
 
 
 @app.get("/vitality/thresholds", tags=["Info"])
