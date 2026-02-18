@@ -1,10 +1,11 @@
 """
 better_engine.core.math.stochastic_vitality
 ============================================
-Advanced population modeling using Stochastic Differential Equations (SDEs).
+Advanced population modeling using the SIR-Ross-MacDonald framework.
 
 Accounts for environmental 'noise' and biological volatility using 
-Ito Calculus and Brownian Motion simulations.
+Stochastic Differential Equations (SDEs), Ito Calculus, and 
+Brownian Motion simulations.
 """
 
 import numpy as np
