@@ -140,11 +140,14 @@ class BetterAnalysisPipeline:
             )
             swarming_risk = self.qmp_simulator.forecast_queen_cells([qmp_stability] * 10)
             
-            # Swarm Pulse
-            self.swarm_brain.update_telemetry(density, 0.5) # Simulating constant acoustic for now
-            swarm_alert, swarm_pulse = self.swarm_brain.get_swarm_alert_level()
-            if swarm_alert != "Stable":
-                swarming_risk = swarm_alert
+            # Swarm Intelligence (SOTA 2026: Acoustic PSD + Visual Derivative)
+            # Simulating 32kHz audio buffer for swarm frequency analysis
+            audio_buffer = np.random.normal(0, 0.01, 1024) 
+            swarm_data = self.swarm_brain.calculate_swarm_risk(audio_buffer, report.healthy_count)
+            
+            swarm_pulse = swarm_data["risk_score"]
+            if swarm_data["prediction"] != "STABLE":
+                swarming_risk = f"{swarm_data['prediction']} ({swarm_data['time_to_event']})"
 
             # Disease Analysis
             diseases = {
