@@ -71,7 +71,7 @@ class ScientificAuditor:
         
         return score, is_gold, sharpness, entropy, saliency_mean
 
-def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, move: bool = False):
+def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, move: bool = False, prefix: str = ""):
     try:
         image = cv2.imread(str(img_path))
         if image is None:
@@ -87,7 +87,8 @@ def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, 
         else:
             category = "standard"
             
-        target_path = output_dir / category / img_path.name
+        target_name = f"{prefix}_{img_path.name}" if prefix else img_path.name
+        target_path = output_dir / category / target_name
         target_path.parent.mkdir(parents=True, exist_ok=True)
         
         if move:
@@ -95,7 +96,7 @@ def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, 
         else:
             shutil.copy2(str(img_path), str(target_path))
             
-        return (img_path.name, score, is_gold, sharpness, entropy, saliency)
+        return (target_name, score, is_gold, sharpness, entropy, saliency)
     except Exception as e:
         return f"Error: {e}"
 
@@ -105,6 +106,8 @@ def main():
     parser.add_argument("output", help="Directory to store sorted images")
     parser.add_argument("--move", action="store_true", help="Move instead of copy")
     parser.add_argument("--workers", type=int, default=8, help="Parallel workers")
+    parser.add_argument("--prefix", default="", help="Prefix for output filenames")
+    parser.add_argument("--manifest_name", default="gold_tier_manifest.csv", help="Name of the output manifest")
     args = parser.parse_args()
 
     input_dir = Path(args.input)
@@ -117,14 +120,13 @@ def main():
     
     if not files:
         print(f"❌ Error: No images found in {input_dir}")
-        print(f"📂 Current directory contents: {[str(p.name) for p in input_dir.glob('*')]}")
         return
     
     print(f"📊 Auditing {len(files)} images for SOTA scientific selection...")
     
     results_data = []
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
-        futures = {executor.submit(process_image, f, output_dir, auditor, args.move): f for f in files}
+        futures = {executor.submit(process_image, f, output_dir, auditor, args.move, args.prefix): f for f in files}
         for future in tqdm(futures, total=len(files)):
             res = future.result()
             if isinstance(res, tuple):
@@ -132,12 +134,11 @@ def main():
 
     # Generate Kaggle Manifest for 'Gold Tier' weights
     results_data.sort(key=lambda x: x[1], reverse=True) # Sort by score
-    gold_manifest = results_data[:20000]
     
-    manifest_path = output_dir / "gold_tier_manifest.csv"
+    manifest_path = output_dir / args.manifest_name
     with open(manifest_path, "w") as f:
         f.write("filename,score,is_gold,sharpness,entropy,saliency\n")
-        for r in gold_manifest:
+        for r in results_data:
             f.write(f"{r[0]},{r[1]:.4f},{r[2]},{r[3]:.4f},{r[4]:.4f},{r[5]:.4f}\n")
 
     print(f"\n✅ Scientific Audit complete. Manifest generated: {manifest_path}")

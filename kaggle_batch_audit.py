@@ -52,8 +52,10 @@ def resolve_path(slug):
 def run_audit():
     print("🐝 Starting Master Multi-Dataset Audit...")
     
-    output_base = "output/master_gold_collection"
-    os.makedirs(output_base, exist_ok=True)
+    output_base = Path("output/master_gold_collection")
+    output_base.mkdir(parents=True, exist_ok=True)
+    
+    manifests = []
 
     for slug in DATASETS:
         ds_path = resolve_path(slug)
@@ -63,23 +65,47 @@ def run_audit():
 
         print(f"\n📡 Processing Pillar: {ds_path}")
         
-        # We run the command via subprocess to utilize the parallel worker logic in the main script
+        # SOTA: Unique prefix based on slug to avoid collisions
+        prefix = slug.split("/")[-1].replace("-", "_")
+        manifest_name = f"manifest_{prefix}.csv"
+        
         cmd = [
             sys.executable, 
             "data_prep_filter.py", 
-            ds_path, 
-            output_base, 
-            "--workers", "4"
+            str(ds_path), 
+            str(output_base), 
+            "--workers", "4",
+            "--prefix", prefix,
+            "--manifest_name", manifest_name
         ]
         
         try:
             subprocess.run(cmd, check=True)
+            manifests.append(output_base / manifest_name)
         except subprocess.CalledProcessError as e:
             print(f"❌ Error processing {ds_path}: {e}")
 
-    print("\n✨ Master Multi-Dataset Audit Complete.")
-    print(f"📂 Unified Gold Tier assets are in: {output_base}")
-    print("🚀 Next step: Run gold_tier_audit_crossref.py on the consolidated manifest.")
+    # Consolidation Layer: Merge all manifests and take top 20,000
+    print("\n🔗 Consolidating Multi-Dataset Manifests...")
+    import pandas as pd
+    
+    all_data = []
+    for m in manifests:
+        if m.exists():
+            all_data.append(pd.read_csv(m))
+            
+    if all_data:
+        master_df = pd.concat(all_data, ignore_index=True)
+        master_df = master_df.sort_values(by="score", ascending=False).head(20000)
+        
+        master_path = output_base / "master_gold_tier_manifest.csv"
+        master_df.to_csv(master_path, index=False)
+        print(f"✨ Master Collection Complete: {len(master_df)} Gold Tier assets indexed.")
+        print(f"📂 Master Manifest: {master_path}")
+    else:
+        print("❌ Error: No audit data collected.")
+
+    print("\n🚀 Next step: Run gold_tier_audit_crossref.py on the consolidated manifest.")
 
 if __name__ == "__main__":
     run_audit()
