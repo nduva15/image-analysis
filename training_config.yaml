@@ -1,0 +1,62 @@
+# BetterBee JFST-DETR Training Configuration
+# SOTA Small-Object Strategy for 400k Dataset
+
+# Dataset Paths
+path: ./dataset/processed_400k
+train: train/images
+val: val/images
+test: test/images
+
+# Classes (Canonical BetterBee Set)
+names:
+  0: healthy_bee
+  1: varroa_mite
+  2: dwv_bee
+  3: pollen_carrying_bee
+  4: drone
+  5: wasp
+
+# Hyperparameters (Optimized for Small Targets)
+hyp:
+  lr0: 0.01
+  lrf: 0.0001
+  momentum: 0.937
+  weight_decay: 0.0005
+  warmup_epochs: 3.0
+  warmup_momentum: 0.8
+  box: 0.05
+  cls: 0.3
+  dfl: 1.5
+  pose: 12.0
+  kpt: 2.0
+  hsv_h: 0.015
+  hsv_s: 0.7
+  hsv_v: 0.4
+  degrees: 0.0
+  translate: 0.1
+  scale: 0.9
+  shear: 0.0
+  perspective: 0.0
+  flipud: 0.5
+  fliplr: 0.5
+  mosaic: 1.0
+  mixup: 0.15
+  copy_paste: 0.1
+
+# JFST-DETR Architecture Overrides
+model:
+  backbone: CSPDarknet-v8 # High feature richness
+  neck: SEPN-FPN          # Pyramid enhancement for mites
+  head: DETR-SmallHead    # Transformer queries optimized for < 10px objects
+  modules:
+    - GAAM-Attention      # Global Awareness Adaptive Module
+
+# Training Control
+epochs: 100
+batch: 32            # Adjust based on VRAM (T4/P100 targets)
+imgsz: 1280          # High-res input is critical for phoretic mite detection
+device: 0            # Single GPU
+multi_scale: true
+optimizer: AdamW     # Better convergence for DETR-heads
+cos_lr: true
+close_mosaic: 10     # Disable mosaic for last 10 epochs for precision

@@ -25,6 +25,7 @@ from better_engine.core.vitality import Detection, compute_colony_report, Colony
 from better_engine.detectors.mite_detector import MiteDetector
 from better_engine.detectors.bee_classifier import BeeClassifier
 from better_engine.detectors.entrance_monitor import EntranceMonitor
+from better_engine.detectors.acoustics.spectrogram import AcousticAnalyzer
 
 
 class AnalysisMode(str, Enum):
@@ -58,12 +59,13 @@ class AnalysisResult:
 # ---------------------------------------------------------------------------
 
 class _Pipeline:
-    """Internal singleton that holds loaded models."""
+    """Internal singleton that holds loaded models and intelligence modules."""
 
     def __init__(self):
         self.mite_detector  = MiteDetector()
         self.bee_classifier = BeeClassifier()
         self.entrance_monitor = EntranceMonitor()
+        self.acoustic_analyzer = AcousticAnalyzer()
         self._initialized = False
 
     def load_weights(self, weights_dir: Path = Path("weights")) -> None:
