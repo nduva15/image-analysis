@@ -1,0 +1,25 @@
+                    Executable : /Users/joaquinblanco/Library/Android/sdk/cmake/3.18.1/bin/cmake
+arguments : 
+-H/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=16
+-DANDROID_PLATFORM=android-16
+-DANDROID_ABI=x86_64
+-DCMAKE_ANDROID_ARCH_ABI=x86_64
+-DANDROID_NDK=/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600
+-DCMAKE_ANDROID_NDK=/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600
+-DCMAKE_TOOLCHAIN_FILE=/Users/joaquinblanco/Library/Android/sdk/ndk/19.2.5345600/build/cmake/android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=/Users/joaquinblanco/Library/Android/sdk/cmake/3.18.1/bin/ninja
+-DCMAKE_CXX_FLAGS=-frtti -fexceptions -std=c++17
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/build/app/intermediates/cxx/Debug/42i1a2p6/obj/x86_64
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/build/app/intermediates/cxx/Debug/42i1a2p6/obj/x86_64
+-DCMAKE_BUILD_TYPE=Debug
+-B/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/42i1a2p6/x86_64
+-GNinja
+-DOpenCV_DIR=/Users/joaquinblanco/Developer/OpenCv/OpenCV-android-sdk/sdk/native
+jvmArgs : 
+
+
+                    Build command args: []
+                    Version: 2

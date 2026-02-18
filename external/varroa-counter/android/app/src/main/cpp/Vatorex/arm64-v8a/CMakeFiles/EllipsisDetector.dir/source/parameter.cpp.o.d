@@ -1,0 +1,22 @@
+EllipsisDetector/CMakeFiles/EllipsisDetector.dir/source/parameter.cpp.o: \
+  /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter_zhaw/ZHAW/Vatorex/dependencies/EllipsisDetector/source/parameter.cpp \
+  /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter_zhaw/ZHAW/Vatorex/dependencies/EllipsisDetector/include/EllipsisDetector/parameter.h \
+  /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter_zhaw/ZHAW/Vatorex/build/Vatorex/arm64-v8a/EllipsisDetector/config_ellipsis_detector.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/cstdint \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/__config \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/features.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/sys/cdefs.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/versioning.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/api-level.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/ndk-version.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/pthread.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/stdint.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/lib64/clang/14.0.1/include/stdint.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/stdint.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/bits/wchar_limits.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/stddef.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/lib64/clang/14.0.1/include/stddef.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/lib64/clang/14.0.1/include/__stddef_max_align_t.h \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/__nullptr \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/cassert \
+  /Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/assert.h

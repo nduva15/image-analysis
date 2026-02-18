@@ -1,0 +1,2 @@
+/usr/bin/ar qc libEllipsisDetector.a CMakeFiles/EllipsisDetector.dir/source/ellipse_detector.cpp.o CMakeFiles/EllipsisDetector.dir/source/parameter.cpp.o CMakeFiles/EllipsisDetector.dir/source/elliptical_fitting.cpp.o CMakeFiles/EllipsisDetector.dir/source/ellipticalhough.cpp.o
+/Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib libEllipsisDetector.a
