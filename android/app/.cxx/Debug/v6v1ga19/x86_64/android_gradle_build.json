@@ -1,0 +1,40 @@
+{
+  "buildFiles": [
+    "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/joaquinblanco/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+      "-C",
+      "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/joaquinblanco/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+    "-C",
+    "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "varroa_counter::@6890427a1f51a3e7e1df": {
+      "toolchain": "toolchain",
+      "abi": "x86_64",
+      "artifactName": "varroa_counter",
+      "output": "/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/build/app/intermediates/cxx/Debug/v6v1ga19/obj/x86_64/libvarroa_counter.so",
+      "runtimeFiles": [
+        "/Users/joaquinblanco/Developer/OpenCv/OpenCV-android-sdk/sdk/native/libs/x86_64/libopencv_java4.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/Users/joaquinblanco/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+      "cppCompilerExecutable": "/Users/joaquinblanco/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

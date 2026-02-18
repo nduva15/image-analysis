@@ -1,0 +1,2 @@
+/usr/bin/ar qc libVatorex.a CMakeFiles/Vatorex.dir/source/zhaw_image.cpp.o CMakeFiles/Vatorex.dir/source/zhaw_imgmerger.cpp.o CMakeFiles/Vatorex.dir/source/coin_mite_detector.cpp.o CMakeFiles/Vatorex.dir/source/threadutils.cpp.o
+/Users/joaquinblanco/Library/Android/sdk/ndk/24.0.8215888/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ranlib libVatorex.a

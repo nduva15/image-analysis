@@ -1,0 +1,15 @@
+ninja: Entering directory `/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/x86_64'
+[0/1] Re-running CMake...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/.cxx/Debug/v6v1ga19/x86_64
+[1/2] Building CXX object CMakeFiles/varroa_counter.dir/native-lib.cpp.o
+FAILED: CMakeFiles/varroa_counter.dir/native-lib.cpp.o 
+/Users/joaquinblanco/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/joaquinblanco/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/joaquinblanco/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dvarroa_counter_EXPORTS -I/Users/joaquinblanco/Developer/OpenCv/OpenCV-android-sdk/sdk/native/jni/include -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/Vatorex -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/EllipsisDetector -I/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/EllipsisDetector/impl -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -frtti -fexceptions -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/varroa_counter.dir/native-lib.cpp.o -MF CMakeFiles/varroa_counter.dir/native-lib.cpp.o.d -o CMakeFiles/varroa_counter.dir/native-lib.cpp.o -c /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/native-lib.cpp
+In file included from /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/native-lib.cpp:3:
+In file included from /Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/Vatorex/zhaw_imgmerger.h:12:
+/Users/joaquinblanco/Developer/FlutterProjects/varroa_counter/android/app/src/main/cpp/Vatorex/include/Vatorex/zhaw_image.h:11:10: fatal error: 'config_vatorex.h' file not found
+#include "config_vatorex.h"
+         ^~~~~~~~~~~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.
