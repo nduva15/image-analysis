@@ -21,6 +21,9 @@ DATASETS = [
     "kport354041/honeybee-positions",
     "ivanfel/honey-bee-pollen",
     "jenny18/honey-bee-annotated-images",
+    "andrewlca/bee-image-object-detection",
+    "shaylynnmorphew/bee-images-separated",
+    "alfijulian01/stingless-bee-meliponinae-species-image-dataset",
     # Notebook Refinement Sources
     "xiangtic/honey-bee-colonies-and-the-use-of-neonicotinoids",
     "dmitrypukhov/honey-bee-health-detection-with-cnn",
