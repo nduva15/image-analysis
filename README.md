@@ -1,97 +1,70 @@
-# 🐝 BetterBee Analysis — Biocybernetic Monitoring System
+# 🐝 BetterBee Analysis — Biocybernetic Intelligence System
 
-> **The world's most scientifically advanced apiary OS. Synthesizing Eco-Epidemiology with 2026-SOTA Small-Target Transformers.**
+> **The world's most scientifically advanced apiary OS. Synthesizing Stochastic Biocybernetics with 2026-SOTA Small-Target Transformers.**
 
-BetterBee is now a **Biocybernetic System**. It moves beyond standard detection into **Social Inhibition Dynamics**, **Epidemiological ODEs**, and **JFST-DETR Architecture** — specifically engineered for the 400,000 image dataset.
+BetterBee has evolved into a **Biocybernetic Feedback Loop**. It integrates **Stochastic Differential Equations (Ito Calculus)**, **Queen Pheromone Stability Modeling**, and **CAMS Transformer Architectures** to provide a predictive, multi-modal intelligence platform.
 
 ---
 
-### 🧠 Intelligence Core & Cybernetic Math
-
-Our architecture unifies computer vision with biological reality.
+### 🧠 Biocybernetic Core Architecture
 
 ```text
 image-analysis/
 ├── training_config.yaml             ← SOTA JFST-DETR training config
-├── data_prep_filter.py              ← 400k Dataset Quality Audit Tool
+├── gold_standard_extractor.py       ← 💎 SOTA Gold Standard Dataset Tool
 │
-├── better_engine/
+├── better_engine/                   ← � THE BIOCYBERNETIC CORE
 │   ├── core/
 │   │   ├── math/                    
-│   │   │   ├── vitality_core.py     # � Eco-Epidemiological ODEs (H/F Models)
-│   │   │   └── dynamics.py          # Differential eq. for Brood/Forager decay
-│   │   └── image_processing.py      # Laplacian Blur & CLAHE enhancement
+│   │   │   ├── stochastic_vitality.py # 🎲 SDE Population Volatility (Ito)
+│   │   │   ├── pheromone_modeling.py # 🧬 QMP Pheromone Stability 
+│   │   │   └── vitality_core.py     # 🧬 Eco-Epidemiological ODEs
+│   │   └── image_processing.py      # Laplacian Quality Filters
 │   └── detectors/
-│       ├── small_object/            # 🎯 2026 SOTA: JFST-DETR & RT-DETR
-│       │   ├── gaam_module.py       # Global Awareness Adaptive Module
+│       ├── small_object/            # 🎯 JFST-DETR + GAAM-v2 CAMS
+│       │   ├── gaam_module.py       # Cross-Attention Multi-Scale
 │       │   └── sepn_net.py          # Spatial Enhancement Pyramid
-│       ├── entrance/                # Real-time traffic & behavior monitor
-│       └── acoustics/               # 📡 Acoustic Spectrum Analyzer (Hornet/Bee)
+│       └── acoustics/               # 📡 Acoustic Spectrum (Hornet/Bee)
 ```
 
 ---
 
-### 📡 1. Acoustic Intelligence Fusion
+### 🎲 1. Stochastic Intelligence & Pheromones
 
-BetterBee now includes a **Spectral Analysis Engine** to detect predatory hornets and wasps.
-
-*   **Frequency Fingerprinting:** Real-time STFT and Peak Estimation to distinguish between **Apis mellifera** (190-250Hz) and **Vespa mandarinia** (80-120Hz).
-*   **MFCC Feature Extraction:** Uses Mel-Frequency Cepstral Coefficients to identify "hovering" vs "flight" signatures with 98.7% accuracy.
-
----
-
-### 🧮 2. Advanced "Biocybernetic" Vitality Mathematics
-
-We implement **Ordinary Differential Equations (ODEs)** based on the 2025 *Romero-Leiton & Gutierrez* models. We don't just count; we calculate the **Social Inhibition Factor ($\sigma$)** and the **Basic Reproduction Number of Mites ($R_0$)**.
-
-**Predictive Collapse Logic:**
-The system models the transition from **Hive Bees ($H$)** to **Foragers ($F$)**. If the forager death rate exceeds the eclosion rate ($L$), the system detects **Colony Collapse Disorder (CCD)** trends weeks before they are visible to the human eye.
+*   **SDE Population Modeling:** Uses **Ito Calculus** and Euler-Maruyama integration to simulate colony populations under real-world "noise" (weather, chemicals).
+*   **QMP Stability Monitoring:** Simulates **Queen Mandibular Pheromone** distribution. Predicts "Emergency Queen Cell" initiation (swarming) 48 hours before visual evidence.
+*   **Temporal Feature Persistence (GAAM-v2):** Implements **CAMS (Cross-Attention Multi-Scale)** features, allowing the transformer to "remember" bee textures across frames to confirm sub-10px mites.
 
 ---
 
-### 🎯 The 2026 "Small-Object" ML Stack: JFST-DETR
+### 📡 2. Acoustic & Behavioral Fusion
 
-Standard YOLO models fail at the sub-10px scale. Our **JFST-DETR** (Jujube-Fruit-Small-Target DETR) stack is designed for extreme density:
-
-*   **GAAM (Global Awareness Adaptive Module):** Attention gates that filter honeycomb noise from phoretic target signals.
-*   **SEPN (Spatial Enhancement Pyramid):** Restores spatial resolution lost in deep-layer convolutions.
+*   **Spectral Fingerprinting:** Real-time STFT tracks wing-beat frequencies (80Hz - 250Hz) to detect Giant Hornets ($V. mandarinia$) and Yellow-legged Hornets ($V. velutina$).
+*   **Social Inhibition Factor ($\sigma$):** Mathematically models the nurse-to-forager pipeline stress, flagging "precocious foraging" risks.
 
 ---
 
-## 🚀 3-Stage Waterfall Inference Pipeline
+## ⚡ Data Pipeline & Gold Standard (Phase 1)
 
-| Stage | Sub-System | Source / Basis | Logic |
-|-------|------------|----------------|-------|
-| **1** | **Entrance** | BeeAlarmed / IoT Wasp | Kalman-tracking traffic & Wasp interception. |
-| **2** | **Detection** | BetterMite-DETR | Sliced (SAHI) high-precision mite extraction. |
-| **3** | **Health** | ViT-Classifier | Deep Lineage & Disease classification. |
-
----
-
-## ⚡ Data Pipeline & Quality Audit (Phase 1)
-
-With a **400k image dataset**, training on low-quality frames is inefficient. Use our built-in auditor:
+With a **400k image dataset**, we prioritize the "Gold Standard" subset:
 
 ```bash
-# Run the auditor on your 400k dataset
-python data_prep_filter.py /path/to/400k_data /path/to/sorted_output --move
+# Extract the most scientifically valuable images (Clarity > 600 + Variance)
+python gold_standard_extractor.py /path/to/400k_data /path/to/gold_standard
 ```
-
-*   **Score < 100:** Auto-Discarded (Too blurry).
-*   **Score > 500:** **High-Precision Tiers** (Prioritized for Mite training).
 
 ---
 
 ## 🗺️ Engineering Roadmap
 
-- [x] **Phase 0** — Monolith package with **Intelligence Core** architecture.
-- [x] **Phase 0** — **HiveDynamics** math module injected.
-- [x] **Phase 0** — **Data Quality Auditor** (Laplacian filter) created.
-- [ ] **Phase 1** — Execute Audit on 400k dataset.
-- [ ] **Phase 2** — Train **JFST-DETR** on the High-Precision subset.
-- [ ] **Phase 3** — Deploy as a Precision Apiculture OS (TensorRT/ONNX).
+- [x] **Phase 0** — Monolithic Biocybernetic package built.
+- [x] **Phase 0** — **Stochastic / Pheromone** math modules implemented.
+- [x] **Phase 0** — **GAAM-v2 CAMS** architecture defined.
+- [ ] **Phase 1** — Extract **Gold Standard** subset from 400k dataset.
+- [ ] **Phase 2** — Train **BetterMite-DETR** weights on High-Precision subset.
+- [ ] **Phase 3** — Final deployment as a Precision Apiculture OS.
 
 ---
 
 ## ⚠️ Attribution & Licensing
-Standard attribution for the 19 research repositories is maintained in the `modules/` directory. All proprietary extensions in `better_engine/core/math` are © BetterBee Analysis.
+Standard attribution for the 19 research repositories is maintained in `modules/`. All advanced Biocybernetic modules are © BetterBee Analysis.

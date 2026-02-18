@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 import better_engine
-from better_engine.pipeline import AnalysisMode, AnalysisResult, load_weights
+from better_engine.pipeline import AnalysisMode, BetterAnalysisResult, load_weights
 from better_engine.pipeline import analyze_image as _analyze_image
 
 # ---------------------------------------------------------------------------
@@ -67,31 +67,26 @@ class VitalityOut(BaseModel):
     warnings: list[str]
     needs_treatment: bool
     is_critical: bool
+    # Advanced Metrics
+    collapse_probability: float
+    qmp_stability: float
+    swarming_risk: str
 
 
 class AnalysisOut(BaseModel):
     request_id: str
     mode: str
     processing_time_ms: float
-    image_width: int
-    image_height: int
-    blur_score: float
-    is_sharp: bool
     total_detections: int
     detections: list[DetectionOut]
     vitality: VitalityOut
-    model_info: dict[str, Any]
 
 
-def _to_response(result: AnalysisResult) -> AnalysisOut:
+def _to_response(result: BetterAnalysisResult) -> AnalysisOut:
     return AnalysisOut(
         request_id=result.request_id,
         mode=result.mode.value,
         processing_time_ms=result.processing_time_ms,
-        image_width=result.image_width,
-        image_height=result.image_height,
-        blur_score=result.blur_score,
-        is_sharp=result.is_sharp_enough,
         total_detections=result.total_detections,
         detections=[
             DetectionOut(
@@ -111,8 +106,10 @@ def _to_response(result: AnalysisResult) -> AnalysisOut:
             warnings=result.report.warnings,
             needs_treatment=result.report.needs_treatment,
             is_critical=result.report.is_critical,
+            collapse_probability=result.collapse_probability,
+            qmp_stability=result.qmp_stability,
+            swarming_risk=result.swarming_risk,
         ),
-        model_info=result.model_info,
     )
 
 
