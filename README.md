@@ -11,47 +11,40 @@ A next-generation bee health monitoring system that unifies the best open-source
 ```
 image-analysis/
 │
-├── main.py                          ← FastAPI HTTP layer (thin transport only)
-├── requirements.txt                 ← Unified, conflict-free dependencies
-├── MASTER_ENGINE_DOCS.md            ← Combined docs from all 19 repos
+├── main.py                          ← FastAPI HTTP layer (thin transport)
+├── requirements.txt                 ← Unified dependencies
 │
 ├── better_engine/                   ← 🏗️ THE UNIFIED PACKAGE
-│   ├── __init__.py                  ← Public API: analyze_image, ColonyReport
-│   ├── pipeline.py                  ← 3-Stage Waterfall Inference Pipeline
-│   ├── core/
-│   │   ├── vitality.py              ← Colony Vitality Score algorithm
-│   │   └── image_processing.py     ← Blur detection, CLAHE, letterbox resize
-│   └── detectors/
-│       ├── mite_detector.py         ← YOLO11 + SAHI tiled inference
-│       ├── bee_classifier.py        ← Multi-class ViT/CNN classifier
-│       └── entrance_monitor.py     ← Kalman tracking + wasp detection
+│   ├── __init__.py                  ← Public API
+│   ├── pipeline.py                  ← Waterfall Inference Pipeline
+│   ├── core/                        ← Vitality logic & pre-processing
+│   └── detectors/                   ← YOLO, ViT, and Entrance wrappers
 │
-├── modules/                         ← 19 source repositories (reference code)
-│   ├── BeeAlarmed/
-│   ├── bee-mite-detector/
-│   ├── Varroa_mites_detection/
-│   ├── VarroaMitesDetectorAndCounter/
-│   ├── varroa-counter/
-│   ├── varroaTrayCounter/
-│   ├── varroa_mites_detect/
-│   ├── varroa_mite_detection_yolo13/
-│   ├── varroa_mite_detection_cascade_rcnn_hrnet/
-│   ├── Varroa-Mites-Detection-In-Bees/
-│   ├── bee_classification/
-│   ├── BeesClassification/
-│   ├── naive-bees-deep-learning-with-images-bees/
-│   ├── Na-ve-Bees-Deep-Learning-with-Images/
-│   ├── Bee_Detection/
-│   ├── IoT-Based-Autonomous-Monitoring-System-for-Real-Time-Wasp-Detection-at-Beehive-Entrances/
-│   ├── beeMonitorProject/
-│   ├── hive/
-│   └── deepabis/
-│
-└── weights/                         ← (Create this) Trained model weights
-    ├── yolo11n-bee.pt               ← YOLO11-Nano for mite detection (Stage 1+2)
-    ├── yolo11n-entrance.pt          ← YOLO11-Nano for entrance monitoring
-    └── vit-bee-classifier.pt        ← ViT classifier (Stage 3)
+├── modules/                         ← 📚 Research Module Library (19 Repos)
+└── weights/                         ← Trained model weights (YOLO11, ViT)
 ```
+
+---
+
+## 📚 Research Module Library (19 Repos Unified)
+
+Our engine integrates and improves upon the following research repositories:
+
+| Category | Module | Key Technology |
+| :--- | :--- | :--- |
+| **Edge / IoT** | `BeeAlarmed` | Entrance tracking, LoRaWAN, fanning detection. |
+| | `bee-mite-detector` | YOLOv8 + Raspberry Pi 5 + Hailo-8L accelerator. |
+| | `IoT-Wasp-Monitor` | Jetson Nano optimized real-time wasp detection. |
+| | `beeMonitorProject` | IoT-based hive environmental & visual monitoring. |
+| **Mite Detection** | `Varroa-Detection` | Faster R-CNN (ResNet50 FPN v2) high-precision. |
+| | `YOLO13-Mite` | YOLO13 + C3k2-gConv attention mechanism. |
+| | `Cascade-HRNet` | Cascade R-CNN + HRNet for sub-pixel accuracy. |
+| | `varroa-counter` | Flutter + Native C++/OpenCV mobile engine. |
+| | `trayCounter` | Specialized tray/sticky-sheet automated counting. |
+| **Health & Class** | `bee_classification` | CNN models trained on Naive Bees SOTA dataset. |
+| | `deepabis` | Automated Bee Identification System for species. |
+| | `Naive-Bees-DL` | Deep Learning implementations for health classification. |
+| **Frameworks** | `hive` | Metaflow AI framework for scaled hive data. |
 
 ---
 
@@ -60,8 +53,8 @@ image-analysis/
 | Stage | Class | Source Modules | Purpose | Speed |
 |-------|-------|----------------|---------|-------|
 | **1** | `EntranceMonitor` | BeeAlarmed, IoT Wasp, beeMonitorProject | Frame scan + Kalman tracking | ~60 FPS |
-| **2** | `MiteDetector` | bee-mite-detector, Varroa_mites_detection, varroa_mite_detection_yolo13, +8 more | YOLO11 + SAHI tiling | ~15 FPS |
-| **3** | `BeeClassifier` | bee_classification, BeesClassification, Naive Bees, Bee_Detection, deepabis | ViT deep classification | ~5 FPS |
+| **2** | `MiteDetector` | bee-mite-detector, Varroa-Detection, YOLO13-Mite, +8 more | YOLO11 + SAHI tiling | ~15 FPS |
+| **3** | `BeeClassifier` | bee_classification, Naive-Bees-DL, deepabis | ViT deep classification | ~5 FPS |
 
 **5 Detection Classes:** `healthy` · `varroa` · `deformed_wing_virus` · `pollen_carrying` · `drone` · `wasp`
 
@@ -75,9 +68,6 @@ pip install -r requirements.txt
 
 # 2. Run the API server
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-
-# 3. Open interactive docs
-# → http://localhost:8000/docs
 ```
 
 ### Use the package directly in Python
@@ -90,7 +80,6 @@ with open("hive_photo.jpg", "rb") as f:
 
 print(f"Vitality: {result.report.vitality_score}% ({result.report.grade})")
 print(f"Varroa rate: {result.report.infestation_rate:.1f} per 100 bees")
-print(f"Needs treatment: {result.report.needs_treatment}")
 ```
 
 ---
@@ -104,14 +93,6 @@ print(f"Needs treatment: {result.report.needs_treatment}")
 | `POST` | `/analyze` | **Single image analysis** |
 | `POST` | `/analyze/batch` | Multi-image batch (up to 20) |
 | `GET` | `/modules` | List all 19 integrated modules |
-| `GET` | `/vitality/thresholds` | Varroa treatment thresholds |
-
-### Example: Analyze a Hive Image
-
-```bash
-curl -X POST "http://localhost:8000/analyze?mode=standard" \
-  -F "file=@hive_photo.jpg"
-```
 
 ---
 
@@ -139,15 +120,12 @@ CVS = (healthy_ratio × 100)
 
 ## 🗺️ Development Roadmap (PRD)
 
-- [x] **Phase 0** — 19 repos merged into `modules/` with git history preserved
-- [x] **Phase 0** — `better_engine` unified Python package built
-- [x] **Phase 0** — FastAPI backend running (`main.py` as thin transport layer)
-- [x] **Phase 0** — Colony Vitality Score algorithm implemented
-- [x] **Phase 0** — CLAHE contrast enhancement + Laplacian blur filter
-- [ ] **Phase 1** — Data prep: filter 400k images by blur score, convert labels to YOLO `.txt`
-- [ ] **Phase 2** — Train YOLO11-Large on 400k images (Kaggle T4/P100, streaming mode)
-- [ ] **Phase 2** — Export to TensorRT FP16 for Jetson Orin / ONNX for Raspberry Pi 5
-- [ ] **Phase 3** — Load weights into `better_engine` → real inference replaces stubs
+- [x] **Phase 0** — 19 repos merged and unified into `better_engine` package.
+- [x] **Phase 0** — FastAPI backend running with thin transport architecture.
+- [x] **Phase 0** — Colony Vitality Score algorithm implemented.
+- [ ] **Phase 1** — Data prep: filter 400k images by blur score, convert labels to YOLO `.txt`.
+- [ ] **Phase 2** — Train YOLO11-Large on 400k images (Kaggle T4/P100, streaming mode).
+- [ ] **Phase 3** — Load weights into `better_engine` → real inference replaces stubs.
 
 ---
 
@@ -155,10 +133,5 @@ CVS = (healthy_ratio × 100)
 
 - Legacy repos use conflicting frameworks (TF 1.x vs 2.x, PyTorch 1.3 vs 2.x).
   `better_engine` uses the modern stack only. Legacy code in `modules/` is preserved for reference.
-- All 19 source repositories are attributed in `MASTER_ENGINE_DOCS.md`.
-  Most use MIT or CC BY 4.0 licenses — attribution is required and maintained.
-
-```bash
-# Run a legacy TF1 module in isolation if needed
-docker run -v ./modules/varroa_mites_detect:/app tensorflow/tensorflow:1.15 python /app/detect.py
-```
+- Source repositories are attributed within the `modules/` structure.
+  Most use MIT or CC BY 4.0 licenses — attribution is maintained by preserving original LICENSE files in subfolders.
