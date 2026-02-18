@@ -49,6 +49,7 @@ class BetterAnalysisResult:
     swarming_risk: str = "Stable"
     swarm_pulse: float = 0.0
     aarf_days: float = 14.0
+    mite_r0: float = 0.0
     brood_heart_temp_c: float = 0.0
     brood_heart_health_score: float = 0.0
     swarm_relay_status: str = "Offline"
@@ -132,6 +133,7 @@ class BetterAnalysisPipeline:
             h_paths, f_paths, aarf_paths = self.stochastic_math.simulate_path(h0, f0, death_rate)
             collapse_prob = self.stochastic_math.collapse_probability(h_paths, f_paths)
             aarf_days = float(np.mean(aarf_paths[:, -1]))
+            mite_r0 = self.stochastic_math.calculate_beta_R0(mite_load, h0 + f0)
             
             # Pheromone Analysis
             density = min(1.0, report.healthy_count / (len(all_detections) + 1e-6))
@@ -169,6 +171,7 @@ class BetterAnalysisPipeline:
             swarming_risk=thermal_metrics["swarming_risk"] if thermal_metrics and thermal_metrics["swarming_risk"] != "Low" else swarming_risk,
             swarm_pulse=round(swarm_pulse, 4),
             aarf_days=round(aarf_days, 1),
+            mite_r0=round(mite_r0, 4),
             brood_heart_temp_c=thermal_metrics["nest_temp"] if thermal_metrics else 0.0,
             brood_heart_health_score=self.thermal_brain.calculate_health_index(thermal_metrics) if thermal_metrics else 0.0,
             swarm_relay_status=swarm_relay_status,

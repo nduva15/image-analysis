@@ -22,31 +22,36 @@ from tqdm import tqdm
 sys.path.append(str(Path(__file__).parent))
 
 class ScientificAuditor:
-    """Automated Quality Control for the 400k Dataset."""
+    """Automated Quality Control for the 400k Dataset - Kaggle Edition."""
     
-    def __init__(self, high_precision_threshold=800, discard_threshold=200):
+    def __init__(self, high_precision_threshold=800, entropy_threshold=7.2, laplacian_threshold=600):
         self.high_precision_threshold = high_precision_threshold
-        self.discard_threshold = discard_threshold
+        self.entropy_threshold = entropy_threshold
+        self.laplacian_threshold = laplacian_threshold
 
     def calculate_scientific_score(self, image: np.ndarray):
         """
-        Calculates a composite score based on Laplacian Variance and Shannon Entropy.
+        Calculates a composite score and determines 'Gold Tier' status.
         
-        Returns:
-            float: Composite score (0 - 1000+)
+        SOTA Criteria:
+          - Laplacian Variance > 600 (Sub-pixel sharpness)
+          - Shannon Entropy > 7.2 (Information density / dense hive clusters)
         """
         # 1. Laplacian Variance for Sharpness
         sharpness = cv2.Laplacian(image, cv2.CV_64F).var()
         
         # 2. Shannon Entropy for Information Density
-        # We use a 256-bin histogram of the grayscale image
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         marg = np.histogram(gray, bins=256, range=(0, 256))[0] / gray.size
         entropy = -np.sum(marg * np.log2(marg + 1e-7))
         
-        # Composite Weighting: Scientific SOTA balancing
-        # Sharpness is critical for mites, Entropy ensures we aren't just looking at blur.
-        return (sharpness * 0.7) + (entropy * 300)
+        # 3. Gold Tier Selection Logic
+        is_gold = sharpness > self.laplacian_threshold and entropy > self.entropy_threshold
+        
+        # Composite Score for ranking (0 - 1000+)
+        score = (sharpness * 0.7) + (entropy * 300)
+        
+        return score, is_gold, sharpness, entropy
 
 def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, move: bool = False):
     try:
@@ -54,12 +59,12 @@ def process_image(img_path: Path, output_dir: Path, auditor: ScientificAuditor, 
         if image is None:
             return None
             
-        score = auditor.calculate_scientific_score(image)
+        score, is_gold, sharpness, entropy = auditor.calculate_scientific_score(image)
         
-        # Categorize based on proprietary thresholds
-        if score > auditor.high_precision_threshold:
+        # Categorize strictly for SOTA training
+        if is_gold:
             category = "gold_tier"
-        elif score < auditor.discard_threshold:
+        elif sharpness < 100:
             category = "discard"
         else:
             category = "standard"

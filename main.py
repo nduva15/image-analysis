@@ -73,6 +73,7 @@ class VitalityOut(BaseModel):
     swarming_risk: str
     swarm_pulse: float
     aarf_days: float
+    mite_r0: float
     brood_heart_temp_c: float
     brood_heart_health_score: float
     swarm_relay_status: str
@@ -117,6 +118,7 @@ def _to_response(result: BetterAnalysisResult) -> AnalysisOut:
             swarming_risk=result.swarming_risk,
             swarm_pulse=result.swarm_pulse,
             aarf_days=result.aarf_days,
+            mite_r0=result.mite_r0,
             brood_heart_temp_c=result.brood_heart_temp_c,
             brood_heart_health_score=result.brood_heart_health_score,
             swarm_relay_status=result.swarm_relay_status,
