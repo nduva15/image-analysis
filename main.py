@@ -12,7 +12,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -256,5 +256,104 @@ async def vitality_thresholds():
             "warning": "2–3 mites per 100 bees",
             "treat": "> 3 mites per 100 bees (treatment required)",
         },
+    }
+
+
+@app.post("/api/v1/image/analyze", tags=["Unified Frontend"])
+async def api_v1_analyze(
+    image: UploadFile = File(...),
+    confidence_threshold: float = Form(0.35)
+):
+    """
+    Compatibility endpoint for the Unified React Frontend.
+    Maps SOTA engine results to the UI's expected JSON schema.
+    """
+    suffix = Path(image.filename or "").suffix.lower()
+    if suffix not in SUPPORTED_FORMATS:
+         raise HTTPException(415, f"Unsupported format '{suffix}'")
+         
+    raw = await image.read()
+    
+    try:
+        # Run the full SOTA pipeline
+        # Using SOTA mode ensures the UI gets the 'disease_indicators' from biocybernetic analysis
+        result = _analyze_image(raw, mode=AnalysisMode.SOTA, confidence=confidence_threshold)
+    except Exception as e:
+        raise HTTPException(500, str(e))
+        
+    # --- Map to Frontend Schema ---
+    
+    # 1. Health Status Logic
+    status = "Unknown"
+    grade = result.report.grade.split(" ")[0] # Extract letter grade
+    if grade in ["A", "B"]:
+        status = "Healthy"
+    elif grade in ["C", "D"]:
+        status = "Warning"
+    else:
+        status = "Critical"
+        
+    # 2. Disease Indicators (Combine Mite Load + SDE Disease Predictions)
+    indicators = []
+    
+    # Mites
+    if result.report.infestation_rate > 2.0:
+        level = "Critical" if result.report.infestation_rate > 3.0 else "Medium"
+        indicators.append({
+            "disease": "Varroa Mite", 
+            "probability": min(1.0, result.report.infestation_rate / 5.0), 
+            "severity": level
+        })
+    elif result.mite_r0 > 1.0:
+         indicators.append({
+            "disease": "Varroa Outbreak Risk (R0 > 1)", 
+            "probability": min(1.0, result.mite_r0 / 2.0), 
+            "severity": "High"
+        })
+        
+    # Other Diseases from SDE/Biometry
+    for name, val in result.diseases.items():
+        if val > 0.05: # Lower threshold to show in UI
+            display_name = name.replace("_", " ").title()
+            severity = "High" if val > 0.6 else "Medium"
+            indicators.append({
+                "disease": display_name,
+                "probability": val,
+                "severity": severity
+            })
+
+    # 3. Recommendations
+    recs = result.report.warnings
+    if not recs:
+        recs = ["Colony appears healthy. Continue regular monitoring."]
+        
+    # 4. Limit detections payload
+    ui_detections = []
+    for i, d in enumerate(result.detections):
+        if i >= 150: break
+        ui_detections.append({
+            "id": i,
+            "confidence": float(d.confidence),
+            "health": d.label.value,
+            "bbox": {
+                "x": float(d.bbox[0]), 
+                "y": float(d.bbox[1]), 
+                "width": float(d.bbox[2]-d.bbox[0]), 
+                "height": float(d.bbox[3]-d.bbox[1])
+            }
+        })
+
+    return {
+        "success": True,
+        "processing_time_ms": result.processing_time_ms,
+        "results": {
+            "bee_count": result.total_detections,
+            "health_score": result.report.vitality_score,
+            "health_status": status,
+            "confidence": 0.88, 
+            "detections": ui_detections,
+            "disease_indicators": indicators,
+            "recommendations": recs
+        }
     }
 
